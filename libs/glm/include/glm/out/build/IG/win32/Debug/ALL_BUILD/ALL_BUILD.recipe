@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>C:\Users\Lucas\Desktop\IG-lab\Práctica 1\IGProjects_x64_VS2022\libs\glm\include\glm\out\build\IG\Debug\ZERO_CHECK</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>C:\Users\Lucas\Desktop\IG-lab\Práctica 1\IGProjects_x64_VS2022\libs\glm\include\glm\out\build\IG\Debug\ALL_BUILD</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles />
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>

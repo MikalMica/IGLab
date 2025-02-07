@@ -1,0 +1,3 @@
+C:/Users/Lucas/Desktop/IG-lab/Práctica 1/IGProjects_x64_VS2022/out/build/IG1/CMakeFiles/IG.dir
+C:/Users/Lucas/Desktop/IG-lab/Práctica 1/IGProjects_x64_VS2022/out/build/IG1/CMakeFiles/ALL_BUILD.dir
+C:/Users/Lucas/Desktop/IG-lab/Práctica 1/IGProjects_x64_VS2022/out/build/IG1/CMakeFiles/ZERO_CHECK.dir

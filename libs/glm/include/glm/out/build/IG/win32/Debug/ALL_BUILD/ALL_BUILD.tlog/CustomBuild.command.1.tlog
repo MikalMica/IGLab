@@ -1,0 +1,10 @@
+^C:\USERS\LUCAS\DESKTOP\IG-LAB\PRÁCTICA 1\IGPROJECTS_X64_VS2022\LIBS\GLM\INCLUDE\GLM\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" "-SC:/Users/Lucas/Desktop/IG-lab/Práctica 1/IGProjects_x64_VS2022/libs/glm/include/glm" "-BC:/Users/Lucas/Desktop/IG-lab/Práctica 1/IGProjects_x64_VS2022/libs/glm/include/glm/out/build/IG" --check-stamp-file "C:/Users/Lucas/Desktop/IG-lab/Práctica 1/IGProjects_x64_VS2022/libs/glm/include/glm/out/build/IG/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

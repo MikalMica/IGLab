@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\Lucas\Desktop\IG-lab\Práctica 1\IGProjects_x64_VS2022\IG1App\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Lucas\Desktop\IG-lab\Práctica 1\IGProjects_x64_VS2022\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{E234DB48-A441-3034-9A5F-81686E717C0F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

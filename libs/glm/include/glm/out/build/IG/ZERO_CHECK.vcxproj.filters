@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Lucas\Desktop\IG-lab\Práctica 1\IGProjects_x64_VS2022\libs\glm\include\glm\out\build\IG\CMakeFiles\189c4c1b5cb09c3eb514fa83d177b367\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{96BA5806-16FE-30E2-80F4-DC740BD40811}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
