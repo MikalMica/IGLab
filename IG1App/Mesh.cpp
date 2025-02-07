@@ -180,7 +180,7 @@ Mesh::generateRectangle(GLdouble w, GLdouble h) {
 
 	a_mesh->mPrimitive = GL_TRIANGLE_STRIP;
 
-	a_mesh->mNumVertices = 8;
+	a_mesh->mNumVertices = 4;
 	a_mesh->vVertices.reserve(a_mesh->mNumVertices);
 
 	a_mesh->vVertices.push_back(vec3(-w / 2, h / 2, 0));
