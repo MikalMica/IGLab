@@ -11,7 +11,7 @@ class Mesh
 public:
 	static Mesh* createRGBAxes(GLdouble l); // creates a new 3D-RGB axes mesh
 	static Mesh* generateRegularPolygon(GLuint num, GLdouble r);
-	static Mesh* generateRGBTriangle(GLdouble r);
+	static Mesh* generateRGBTriangle(GLdouble r, glm::vec3 pos = glm::vec3(0, 0, 0));
 	static Mesh* generateRectangle(GLdouble w, GLdouble h);
 	static Mesh* generateRGBRectangle(GLdouble w, GLdouble h);
 

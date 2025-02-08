@@ -54,7 +54,7 @@ Mesh* Mesh::generateRegularPolygon(GLuint num, GLdouble r) {
 	return a_mesh;
 }
 
-Mesh* Mesh::generateRGBTriangle(GLdouble r) {
+Mesh* Mesh::generateRGBTriangle(GLdouble r, vec3 pos) {
 
 	Mesh* a_mesh = new Mesh();
 
@@ -69,15 +69,15 @@ Mesh* Mesh::generateRGBTriangle(GLdouble r) {
 
 	GLdouble x = r * cos(glm::radians(90.0f));
 	GLdouble y = r * sin(glm::radians(90.0f));
-	a_mesh->vVertices.push_back(glm::vec3(x, y, 0));
+	a_mesh->vVertices.push_back(glm::vec3(x + pos.x, y + pos.y, 0));
 
 	x = r * cos(glm::radians(210.0f));
 	y = r * sin(glm::radians(210.0f));
-	a_mesh->vVertices.push_back(glm::vec3(x, y, 0));
+	a_mesh->vVertices.push_back(glm::vec3(x + pos.x, y + pos.y, 0));
 
 	x = r * cos(glm::radians(330.0f));
 	y = r * sin(glm::radians(330.0f));
-	a_mesh->vVertices.push_back(glm::vec3(x, y, 0));
+	a_mesh->vVertices.push_back(glm::vec3(x + pos.x, y + pos.y, 0));
 
 	// Asignación de colores
 
@@ -183,10 +183,10 @@ Mesh::generateRectangle(GLdouble w, GLdouble h) {
 	a_mesh->mNumVertices = 4;
 	a_mesh->vVertices.reserve(a_mesh->mNumVertices);
 
-	a_mesh->vVertices.push_back(vec3(-w / 2, h / 2, 0));
+	a_mesh->vVertices.push_back(vec3(w / 2, -h / 2, 0));
 	a_mesh->vVertices.push_back(vec3(-w / 2, -h / 2, 0));
 	a_mesh->vVertices.push_back(vec3(w / 2, h / 2, 0));
-	a_mesh->vVertices.push_back(vec3(w / 2, -h / 2, 0));
+	a_mesh->vVertices.push_back(vec3(-w / 2, h / 2, 0));
 
 	return a_mesh;
 }

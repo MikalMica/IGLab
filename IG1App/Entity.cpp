@@ -89,7 +89,7 @@ RegularPolygon::RegularPolygon(GLuint num, GLdouble r) {
 	load();
 }
 
-RGBTriangle::RGBTriangle(GLdouble r) {
+BiFacedRGBTriangle::BiFacedRGBTriangle(GLdouble r) {
 
 	mShader = Shader::get("vcolors");
 	mMesh = Mesh::generateRGBTriangle(r);
@@ -97,7 +97,7 @@ RGBTriangle::RGBTriangle(GLdouble r) {
 }
 
 void
-RGBTriangle::render(mat4 const& modelViewMat) const 
+BiFacedRGBTriangle::render(mat4 const& modelViewMat) const 
 {
 	if (mMesh != nullptr) {
 		mat4 aMat = modelViewMat * mModelMat; // glm matrix multiplication
@@ -116,6 +116,19 @@ RGBTriangle::render(mat4 const& modelViewMat) const
 
 		glDisable(GL_CULL_FACE);
 	}
+}
+
+RGBTriangle::RGBTriangle(GLdouble r, vec3 pos) {
+
+	mShader = Shader::get("vcolors");
+	mMesh = Mesh::generateRGBTriangle(r, pos);
+	load();
+}
+
+void
+RGBTriangle::update() {
+
+	
 }
 
 RGBRectangle::RGBRectangle(GLdouble w, GLdouble h) {
@@ -143,6 +156,7 @@ RGBRectangle::render(mat4 const& modelViewMat) const
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		mMesh->render();
 
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glDisable(GL_CULL_FACE);
 	}
 }

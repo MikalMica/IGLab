@@ -19,6 +19,7 @@ public:
 	Abs_Entity& operator=(const Abs_Entity& e) = delete; // no copy assignment
 
 	virtual void render(const glm::mat4& modelViewMat) const = 0; // abstract method
+	virtual void update() {}
 
 	// modeling matrix
 	glm::mat4 const& modelMat() const { return mModelMat; };
@@ -72,11 +73,18 @@ public:
 	explicit RegularPolygon(GLuint num, GLdouble r);
 };
 
+class BiFacedRGBTriangle : public EntityWithColors
+{
+public:
+	explicit BiFacedRGBTriangle(GLdouble r);
+	void render(const glm::mat4& modelViewMat) const override;
+};
+
 class RGBTriangle : public EntityWithColors
 {
 public:
-	explicit RGBTriangle(GLdouble r);
-	void render(const glm::mat4& modelViewMat) const override;
+	explicit RGBTriangle(GLdouble r, glm::vec3 pos = glm::vec3(0, 0, 0));
+	void update() override;
 };
 
 class RGBRectangle : public EntityWithColors

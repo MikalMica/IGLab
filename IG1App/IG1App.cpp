@@ -55,12 +55,14 @@ IG1App::init()
 	// allocate memory and resources
 	mViewPort = new Viewport(mWinW, mWinH);
 	mCamera = new Camera(mViewPort);
+	mScenes.push_back(new Scene3);
 	mScenes.push_back(new Scene2);
 	mScenes.push_back(new Scene1);
 
 	mCamera->set2D();
 	mScenes[0]->init();
 	mScenes[1]->init();
+	mScenes[2]->init();
 }
 
 void
@@ -162,6 +164,9 @@ IG1App::key(unsigned int key)
 			break;
 		case 'o':
 			mCamera->set2D();
+			break;
+		case 'u':
+			mScenes[mCurrentScene]->update();
 			break;
 		default:
 			if (key >= '0' && key <= '9' && !changeScene(key - '0'))
