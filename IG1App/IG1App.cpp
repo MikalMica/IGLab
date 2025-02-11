@@ -32,6 +32,7 @@ IG1App::run() // enters the main event processing loop
 
 	// IG1App main loop
 	while (!glfwWindowShouldClose(mWindow)) {
+
 		// Redisplay the window if needed
 		if (mNeedsRedisplay) {
 			display();
@@ -42,6 +43,7 @@ IG1App::run() // enters the main event processing loop
 			if (glfwGetTime() >= mNextUpdate) {
 				mNextUpdate += FRAME_DURATION;
 				mScenes[mCurrentScene]->update();
+				mNeedsRedisplay = true;
 			}
 		}
 
@@ -63,16 +65,19 @@ IG1App::init()
 	// allocate memory and resources
 	mViewPort = new Viewport(mWinW, mWinH);
 	mCamera = new Camera(mViewPort);
-	mScenes.push_back(new Scene4);
-	mScenes.push_back(new Scene3);
-	mScenes.push_back(new Scene2);
 	mScenes.push_back(new Scene1);
+	mScenes.push_back(new Scene2);
+	mScenes.push_back(new Scene3);
+	mScenes.push_back(new Scene4);
 
 	mCamera->set2D();
+
 	mScenes[0]->init();
-	mScenes[1]->init();
-	mScenes[2]->init();
-	mScenes[3]->init();
+
+	for (int i = 1; i < mScenes.size(); ++i) {
+		mScenes[i]->init();
+		mScenes[i]->unload();
+	}
 }
 
 void
@@ -179,10 +184,10 @@ IG1App::key(unsigned int key)
 			mUpdateEnabled = !mUpdateEnabled;
 			break;
 		default:
-			if (key >= '0' && key <= '9' && !changeScene(key - '0'))
+			if (key >= '0' && key <= '9' && !changeScene(key - '0')) {
 				cout << "[NOTE] There is no scene " << char(key) << ".\n";
-			else
 				need_redisplay = false;
+			}
 			break;
 	} // switch
 
