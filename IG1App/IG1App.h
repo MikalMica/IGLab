@@ -9,6 +9,7 @@
 #include "Scene1.h"
 #include "Scene2.h"
 #include "Scene3.h"
+#include "Scene4.h"
 #include "Viewport.h"
 
 class IG1App
@@ -64,6 +65,9 @@ protected:
 	GLFWwindow* mWindow = nullptr; // window's handle
 	int mWinW = 800;               // window's width
 	int mWinH = 600;               // window's height
+	const double FRAME_DURATION = 2;
+	bool mUpdateEnabled = true;
+	double mNextUpdate = 0.0;
 };
 
 #endif //_H_IG1App_H_

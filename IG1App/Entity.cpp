@@ -127,8 +127,33 @@ RGBTriangle::RGBTriangle(GLdouble r, vec3 pos) {
 
 void
 RGBTriangle::update() {
+	std::vector<glm::vec3> a_vertices = mMesh->vertices();
 
+	float x = 0.0f;
+	float y = 0.0f;
+	float z = 0.0f;
+
+	for (int i = 0; i < a_vertices.size(); ++i) {
+		x += a_vertices[i].x;
+		y += a_vertices[i].y;
+		z += a_vertices[i].z;
+	}
+
+	x /= a_vertices.size();
+	y /= a_vertices.size();
+	z /= a_vertices.size();
+
+	glm::mat4 mT = glm::translate(glm::mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), glm::vec3(x, y, 0));
+	glm::mat4 mR = glm::rotate(glm::mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), glm::radians(-2.0f), glm::vec3(0, 0, 1));
+	glm::mat4 mT2 = glm::translate(glm::mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), glm::vec3(-x, -y, 0));
+
+	glm::mat4 mR2 = glm::rotate(glm::mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), glm::radians(1.0f), glm::vec3(0, 0, 1));
 	
+	mModelMat *= mT * mR * mT2;
+
+	mModelMat = mR2 * mModelMat;
+
+
 }
 
 RGBRectangle::RGBRectangle(GLdouble w, GLdouble h) {
@@ -159,4 +184,38 @@ RGBRectangle::render(mat4 const& modelViewMat) const
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glDisable(GL_CULL_FACE);
 	}
+}
+
+Cube::Cube(GLdouble length) {
+	mShader = Shader::get("simple");
+	mMesh = Mesh::generateCube(length);
+	load();
+}
+
+void
+Cube::render(mat4 const& modelViewMat) const
+{
+	if (mMesh != nullptr) {
+		mat4 aMat = modelViewMat * mModelMat; // glm matrix multiplication
+		mShader->use();
+		upload(aMat);
+
+		glEnable(GL_CULL_FACE);
+
+		glCullFace(GL_BACK);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+		mMesh->render();
+
+		glCullFace(GL_FRONT);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		mMesh->render();
+
+		glDisable(GL_CULL_FACE);
+	}
+}
+
+RGBCube::RGBCube(GLdouble length){
+	mShader = Shader::get("vcolors");
+	mMesh = Mesh::generateRGBCubeTriangles(length);
+	load();
 }

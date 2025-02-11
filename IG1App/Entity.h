@@ -94,4 +94,16 @@ public:
 	void render(const glm::mat4& modelViewMat) const override;
 };
 
+class Cube : public SingleColorEntity 
+{
+public:
+	explicit Cube(GLdouble length);
+	void render(const glm::mat4& modelViewMat) const override;
+};
+
+class RGBCube : public EntityWithColors 
+{
+public:
+	explicit RGBCube(GLdouble length);
+};
 #endif //_H_Entities_H_

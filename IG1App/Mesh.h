@@ -14,6 +14,8 @@ public:
 	static Mesh* generateRGBTriangle(GLdouble r, glm::vec3 pos = glm::vec3(0, 0, 0));
 	static Mesh* generateRectangle(GLdouble w, GLdouble h);
 	static Mesh* generateRGBRectangle(GLdouble w, GLdouble h);
+	static Mesh* generateCube(GLdouble length);
+	static Mesh* generateRGBCubeTriangles(GLdouble length);
 
 	Mesh();
 	virtual ~Mesh();
