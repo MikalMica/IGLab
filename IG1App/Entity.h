@@ -6,6 +6,7 @@
 
 #include "Mesh.h"
 #include "Shader.h"
+#include "Texture.h"
 
 class Abs_Entity // abstract class
 {
@@ -53,6 +54,15 @@ public:
 	glm::vec4 Color() { return mColor; };
 	void setColor(glm::vec4 color);
 	void render(const glm::mat4& modelViewMat) const override;
+};
+
+class EntityWithTexture : public Abs_Entity {
+protected:
+	Texture* mTexture; //Texture to be rendered
+	bool mModulate; //true if image is going to modulate with vertex colors
+public:
+	explicit EntityWithTexture();
+	virtual void render(const glm::mat4& modelViewMat) const override;
 };
 
 class RGBAxes : public EntityWithColors
@@ -105,5 +115,12 @@ class RGBCube : public EntityWithColors
 {
 public:
 	explicit RGBCube(GLdouble length);
+};
+
+class Ground : public EntityWithTexture
+{
+public:
+	explicit Ground(GLdouble x, GLdouble z);
+	inline void setTexture(Texture* newText) { mTexture = newText; }
 };
 #endif //_H_Entities_H_

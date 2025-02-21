@@ -10,6 +10,7 @@ Mesh::Mesh()
  : mVAO(NONE)
  , mVBO(NONE)
  , mCBO(NONE)
+ , mTCO(NONE)
 {
 }
 
@@ -111,6 +112,14 @@ Mesh::load()
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(vec4), nullptr);
 			glEnableVertexAttribArray(1);
 		}
+
+		if (vTexCoords.size() > 0) { //upload textures
+			glGenBuffers(1, &mTCO);
+			glBindBuffer(GL_ARRAY_BUFFER, mTCO);
+			glBufferData(GL_ARRAY_BUFFER, vTexCoords.size() * sizeof(vec2), vTexCoords.data(), GL_STATIC_DRAW);
+			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(vec2), nullptr);
+			glEnableVertexAttribArray(2);
+		}
 	}
 }
 
@@ -127,6 +136,8 @@ Mesh::unload()
 			glDeleteBuffers(1, &mCBO);
 			mCBO = NONE;
 		}
+
+		if (mTCO != NONE) glDeleteBuffers(1, &mTCO);
 	}
 }
 
@@ -351,6 +362,20 @@ Mesh::generateRGBCubeTriangles(GLdouble length) {
 	a_mesh->vColors.emplace_back(vec4(0, 0, 1, 1));
 	a_mesh->vColors.emplace_back(vec4(0, 0, 1, 1));
 	a_mesh->vColors.emplace_back(vec4(0, 0, 1, 1));
+
+	return a_mesh;
+}
+
+Mesh*
+Mesh::generateRectangleTexCor(GLdouble w, GLdouble h) {
+	Mesh* a_mesh = generateRectangle(w, h);
+
+	a_mesh->vTexCoords.reserve(a_mesh->mNumVertices);
+
+	a_mesh->vTexCoords.emplace_back(1, 0);
+	a_mesh->vTexCoords.emplace_back(0, 0);
+	a_mesh->vTexCoords.emplace_back(1, 1);
+	a_mesh->vTexCoords.emplace_back(0, 1);
 
 	return a_mesh;
 }

@@ -68,6 +68,29 @@ SingleColorEntity::render(mat4 const& modelViewMat) const
 	}
 }
 
+EntityWithTexture::EntityWithTexture() : mModulate(false), mTexture(nullptr)
+{
+	mShader = Shader::get("texture");
+}
+
+void
+EntityWithTexture::render(mat4 const& modelViewMat) const
+{
+	if (mMesh != nullptr) {
+		mat4 aMat = modelViewMat * mModelMat; // glm matrix multiplication
+		mShader->use();
+
+		mShader->setUniform("modulate", mModelMat); // sets the modulate
+		upload(aMat);
+
+		if (mTexture != nullptr) mTexture->bind(); // binds the texture if it isn't nullptr
+
+		mMesh->render();
+
+		if (mTexture != nullptr) mTexture->unbind(); // unbinds the texture
+	}
+}
+
 RGBAxes::RGBAxes(GLdouble l)
 {
 	mShader = Shader::get("vcolors");
@@ -217,5 +240,12 @@ Cube::render(mat4 const& modelViewMat) const
 RGBCube::RGBCube(GLdouble length){
 	mShader = Shader::get("vcolors");
 	mMesh = Mesh::generateRGBCubeTriangles(length);
+	load();
+}
+
+Ground::Ground(GLdouble x, GLdouble z) {
+	mMesh = Mesh::generateRectangleTexCor(x, z);
+	// Rotates the rectangle to make it horizontal
+	mModelMat = glm::rotate(mModelMat, glm::radians(90.0f), glm::vec3(1, 0, 0));
 	load();
 }

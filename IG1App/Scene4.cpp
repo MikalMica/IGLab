@@ -17,4 +17,5 @@ Scene4::init()
 	// Graphics objects (entities) of the scene
 
 	gObjects.push_back(new RGBCube(100));
+
 }

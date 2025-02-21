@@ -1,6 +1,3 @@
-
-
-
 #version 330 core
 
 in vec4 vertexColor;  // color assigned to this vertex
