@@ -252,7 +252,47 @@ Ground::Ground(GLdouble x, GLdouble z, GLuint rw, GLuint rh) {
 }
 
 BoxOutline::BoxOutline(GLdouble length) {
+	mShader = Shader::get("texture");
+	mMesh = Mesh::generateBoxOutlineTexCor(length);
+	load();
+}
+
+void
+BoxOutline::render(mat4 const& modelViewMat) const
+{
+	if (mMesh != nullptr) {
+		mat4 aMat = modelViewMat * mModelMat; // glm matrix multiplication
+		mShader->use();
+
+		mShader->setUniform("modulate", mModelMat); // sets the modulate
+		upload(aMat);
+
+		glEnable(GL_CULL_FACE);
+
+		glCullFace(GL_BACK);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+		if (mTexture != nullptr) mTexture->bind(); // binds the texture if it isn't nullptr
+
+		mMesh->render();
+
+		if (mTexture != nullptr) mTexture->unbind(); // unbinds the texture
+
+		glCullFace(GL_FRONT);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+		if (mExtraTexture != nullptr) mExtraTexture->bind();
+
+		mMesh->render();
+
+		if (mExtraTexture != nullptr) mExtraTexture->unbind();
+
+		glDisable(GL_CULL_FACE);
+	}
+}
+
+Star3D::Star3D(GLdouble re, GLuint np, GLdouble h) {
 	mShader = Shader::get("simple");
-	mMesh = Mesh::generateBoxOutline(length);
+	mMesh = Mesh::generateStar3D(re, np, h);
 	load();
 }

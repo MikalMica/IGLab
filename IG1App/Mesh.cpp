@@ -404,3 +404,60 @@ Mesh::generateBoxOutline(GLdouble length) {
 
 	return a_mesh;
 }
+
+Mesh*
+Mesh::generateBoxOutlineTexCor(GLdouble length) {
+	Mesh* a_mesh = generateBoxOutline(length);
+
+	a_mesh->vTexCoords.reserve(a_mesh->mNumVertices);
+
+	a_mesh->vTexCoords.emplace_back(0, 1);
+	a_mesh->vTexCoords.emplace_back(0, 0);
+	a_mesh->vTexCoords.emplace_back(1, 1);
+	a_mesh->vTexCoords.emplace_back(1, 0);
+
+	a_mesh->vTexCoords.emplace_back(0, 1);
+	a_mesh->vTexCoords.emplace_back(0, 0);
+	a_mesh->vTexCoords.emplace_back(1, 1);
+	a_mesh->vTexCoords.emplace_back(1, 0);
+
+	a_mesh->vTexCoords.emplace_back(0, 1);
+	a_mesh->vTexCoords.emplace_back(0, 0);
+
+	return a_mesh;
+}
+
+Mesh*
+Mesh::generateStar3D(GLdouble re, GLuint np, GLdouble h) {
+	Mesh* a_mesh = new Mesh;
+
+	a_mesh->mPrimitive = GL_TRIANGLE_FAN;
+
+	a_mesh->mNumVertices = np * 2 + 1;
+	a_mesh->vVertices.reserve(a_mesh->mNumVertices);
+
+	a_mesh->vVertices.push_back(vec3(0, 0, 0));
+
+	GLdouble a_alpha = 0;
+
+	float x = re * cos(radians(a_alpha));
+	float y = re * sin(radians(a_alpha));
+
+	for (int i = 0; i < np; ++i) {
+
+		a_mesh->vVertices.push_back(vec3(x, y, h));
+
+		x = (re/2) * cos(radians(a_alpha + (360 / (np * 2))));
+		y = (re/2) * sin(radians(a_alpha + (360 / (np * 2))));
+
+		a_mesh->vVertices.push_back(vec3(x, y, h));
+
+		a_alpha += 360 / np;
+
+		float x = re * cos(radians(a_alpha));
+		float y = re * sin(radians(a_alpha));
+
+	}
+
+	return a_mesh;
+}
