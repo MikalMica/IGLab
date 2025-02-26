@@ -243,9 +243,16 @@ RGBCube::RGBCube(GLdouble length){
 	load();
 }
 
-Ground::Ground(GLdouble x, GLdouble z) {
-	mMesh = Mesh::generateRectangleTexCor(x, z);
+Ground::Ground(GLdouble x, GLdouble z, GLuint rw, GLuint rh) {
+	mShader = Shader::get("texture");
+	mMesh = Mesh::generateRectangleTexCor(x, z,rw, rh);
 	// Rotates the rectangle to make it horizontal
 	mModelMat = glm::rotate(mModelMat, glm::radians(90.0f), glm::vec3(1, 0, 0));
+	load();
+}
+
+BoxOutline::BoxOutline(GLdouble length) {
+	mShader = Shader::get("simple");
+	mMesh = Mesh::generateBoxOutline(length);
 	load();
 }

@@ -63,6 +63,7 @@ protected:
 public:
 	explicit EntityWithTexture();
 	virtual void render(const glm::mat4& modelViewMat) const override;
+	inline void setTexture(Texture* newText) { mTexture = &*newText; }
 };
 
 class RGBAxes : public EntityWithColors
@@ -120,7 +121,12 @@ public:
 class Ground : public EntityWithTexture
 {
 public:
-	explicit Ground(GLdouble x, GLdouble z);
-	inline void setTexture(Texture* newText) { mTexture = newText; }
+	explicit Ground(GLdouble x, GLdouble z, GLuint rw, GLuint rh);
+};
+
+class BoxOutline : public EntityWithColors
+{
+public:
+	explicit BoxOutline(GLdouble length);
 };
 #endif //_H_Entities_H_

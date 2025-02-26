@@ -367,15 +367,40 @@ Mesh::generateRGBCubeTriangles(GLdouble length) {
 }
 
 Mesh*
-Mesh::generateRectangleTexCor(GLdouble w, GLdouble h) {
+Mesh::generateRectangleTexCor(GLdouble w, GLdouble h, GLuint rw, GLuint rh) {
 	Mesh* a_mesh = generateRectangle(w, h);
 
 	a_mesh->vTexCoords.reserve(a_mesh->mNumVertices);
 
-	a_mesh->vTexCoords.emplace_back(1, 0);
-	a_mesh->vTexCoords.emplace_back(0, 0);
-	a_mesh->vTexCoords.emplace_back(1, 1);
-	a_mesh->vTexCoords.emplace_back(0, 1);
+	
+	a_mesh->vTexCoords.emplace_back(vec2(rw, 0));
+	a_mesh->vTexCoords.emplace_back(vec2(0, 0));
+	a_mesh->vTexCoords.emplace_back(vec2(rw, rh));
+	a_mesh->vTexCoords.emplace_back(vec2(0, rh));
+	
+	return a_mesh;
+}
+
+Mesh*
+Mesh::generateBoxOutline(GLdouble length) {
+
+	Mesh* a_mesh = new Mesh;
+
+	a_mesh->mPrimitive = GL_TRIANGLE_STRIP;
+
+	a_mesh->mNumVertices = 10;
+	a_mesh->vVertices.reserve(a_mesh->mNumVertices);
+
+	a_mesh->vVertices.push_back(vec3(length / 2, length / 2, length / 2));
+	a_mesh->vVertices.push_back(vec3(length / 2, -length / 2, length / 2));
+	a_mesh->vVertices.push_back(vec3(length / 2, length / 2, -length / 2));
+	a_mesh->vVertices.push_back(vec3(length / 2, -length / 2, -length / 2));
+	a_mesh->vVertices.push_back(vec3(-length / 2, length / 2, -length / 2));
+	a_mesh->vVertices.push_back(vec3(-length / 2, -length / 2, -length / 2));
+	a_mesh->vVertices.push_back(vec3(-length / 2, length / 2, length / 2));
+	a_mesh->vVertices.push_back(vec3(-length / 2, -length / 2, length / 2));
+	a_mesh->vVertices.push_back(vec3(length / 2, length / 2, length / 2));
+	a_mesh->vVertices.push_back(vec3(length / 2,  -length / 2, length / 2));
 
 	return a_mesh;
 }
