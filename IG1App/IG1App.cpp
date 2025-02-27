@@ -45,10 +45,11 @@ IG1App::run() // enters the main event processing loop
 				mScenes[mCurrentScene]->update();
 				mNeedsRedisplay = true;
 			}
+			glfwWaitEventsTimeout(mNextUpdate - glfwGetTime());
 		}
+		else glfwWaitEvents();
 
 		// Stop and wait for new events
-		glfwWaitEventsTimeout(mNextUpdate - glfwGetTime());
 
 	}
 

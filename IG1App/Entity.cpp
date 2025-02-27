@@ -294,5 +294,41 @@ BoxOutline::render(mat4 const& modelViewMat) const
 Star3D::Star3D(GLdouble re, GLuint np, GLdouble h) {
 	mShader = Shader::get("simple");
 	mMesh = Mesh::generateStar3D(re, np, h);
+	mExtraMesh = Mesh::generateStar3D(re, np, -h);
 	load();
+	mExtraMesh->load();
+}
+
+void
+Star3D::render(mat4 const& modelViewMat) const
+{
+	if (mMesh != nullptr) {
+		mat4 aMat = modelViewMat * mModelMat; // glm matrix multiplication
+		mShader->use();
+		mShader->setUniform("color", mColor);
+		mMesh->render();
+		if(mExtraMesh != nullptr) mExtraMesh->render();
+	}
+}
+
+void
+Star3D::update() 
+{
+	std::vector<glm::vec3> a_vertices = mMesh->vertices();
+
+	float x = 0.0f;
+	float y = 0.0f;
+	float z = 0.0f;
+
+	for (int i = 0; i < a_vertices.size(); ++i) {
+		x += a_vertices[i].x;
+		y += a_vertices[i].y;
+		z += a_vertices[i].z;
+	}
+
+	x /= a_vertices.size();
+	y /= a_vertices.size();
+	z /= a_vertices.size();
+
+	mModelMat = glm::translate(mModelMat, vec3(1, 1, 0));
 }

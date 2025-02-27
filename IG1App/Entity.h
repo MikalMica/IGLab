@@ -135,7 +135,11 @@ public:
 
 class Star3D : public SingleColorEntity
 {
+	Mesh* mExtraMesh;
 public:
 	explicit Star3D(GLdouble re, GLuint np, GLdouble h);
+	inline ~Star3D() { mExtraMesh->unload(); delete mExtraMesh; mExtraMesh = nullptr; }
+	void render(const glm::mat4& modelViewMat) const override;
+	void update() override;
 };
 #endif //_H_Entities_H_

@@ -29,6 +29,6 @@ Scene5::init()
 
 	//gObjects.push_back(a_box);
 	gObjects.push_back(new RGBAxes(100));
-	gObjects.push_back(new Star3D(100, 5, 50));
+	gObjects.push_back(new Star3D(100, 8, 100));
 	//gObjects.push_back(a_ground);
 }
