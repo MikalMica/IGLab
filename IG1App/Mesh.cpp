@@ -433,7 +433,7 @@ Mesh::generateStar3D(GLdouble re, GLuint np, GLdouble h) {
 
 	a_mesh->mPrimitive = GL_TRIANGLE_FAN;
 
-	a_mesh->mNumVertices = np * 2 + 1;
+	a_mesh->mNumVertices = np * 2 + 2;
 	a_mesh->vVertices.reserve(a_mesh->mNumVertices);
 
 	a_mesh->vVertices.push_back(vec3(0, 0, 0));
@@ -454,10 +454,12 @@ Mesh::generateStar3D(GLdouble re, GLuint np, GLdouble h) {
 
 		a_alpha += 360 / np;
 
-		float x = re * cos(radians(a_alpha));
-		float y = re * sin(radians(a_alpha));
+		x = re * cos(radians(a_alpha));
+		y = re * sin(radians(a_alpha));
 
 	}
+
+	a_mesh->vVertices.push_back(vec3(x, y, h));
 
 	return a_mesh;
 }
