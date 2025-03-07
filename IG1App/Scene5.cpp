@@ -16,31 +16,38 @@ Scene5::init()
 
 	// Graphics objects (entities) of the scene
 
+
+	//Creamos el suelo con su textura
 	Texture* a_text = new Texture();
-	Texture* a_extraText = new Texture();
-	Texture* a_starText = new Texture();
-	Texture* a_glassText = new Texture();
-	//a_text->load("../assets/images/baldosaC.png");
+	a_text->load("../assets/images/baldosaC.png");
+
+	Ground* ground = new Ground(300, 300, 1, 1);
+	ground->setTexture(a_text);
+
+	gObjects.push_back(ground);
+	ground == nullptr;
+
+	//Creamos una caja en una esquina del suelo
+	a_text = new Texture();
+	a_text->load("../assets/images/papelE.png");
+
+	BoxOutline* box = new BoxOutline(50, 100, 25, 100);
+	box->setTexture(a_text);
+
+	a_text = new Texture();
 	a_text->load("../assets/images/container.jpg");
-	a_extraText->load("../assets/images/papelE.png");
-	a_starText->load("../assets/images/baldosaP.png");
-	a_glassText->load("../assets/images/windowV.jpg", 100U);
-	//Ground* a_ground = new Ground(50, 50, 1, 1);
-	//a_ground->setTexture(a_text);
-	BoxOutline* a_box = new BoxOutline(100);
-	a_box->setTexture(a_text);
-	a_box->setExtraTexture(a_extraText);
 
-	Star3D* a_star = new Star3D(100, 8, 100);
-	a_star->setTexture(a_starText);
+	box->setExtraTexture(a_text);
+	gObjects.push_back(box);
+	box = nullptr;
 
-	GlassParapet* a_glass = new GlassParapet(100);
-	a_glass->setTexture(a_glassText);
+	//Creamos una estrella encima de la caja
+	a_text = new Texture();
+	a_text->load("../assets/images/baldosaP.png");
 
+	Star3D* star = new Star3D(25, 8, 25, 100, 100, 100);
+	star->setTexture(a_text);
 
-	//gObjects.push_back(a_box);
-	gObjects.push_back(new RGBAxes(100));
-	gObjects.push_back(a_glass);
-	gObjects.push_back(new Photo(100));
-	//gObjects.push_back(a_ground);
+	gObjects.push_back(star);
+	star = nullptr;
 }

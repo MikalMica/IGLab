@@ -382,7 +382,7 @@ Mesh::generateRectangleTexCor(GLdouble w, GLdouble h, GLuint rw, GLuint rh) {
 }
 
 Mesh*
-Mesh::generateBoxOutline(GLdouble length) {
+Mesh::generateBoxOutline(GLdouble length, GLint x, GLint y, GLint z) {
 
 	Mesh* a_mesh = new Mesh;
 
@@ -391,23 +391,23 @@ Mesh::generateBoxOutline(GLdouble length) {
 	a_mesh->mNumVertices = 10;
 	a_mesh->vVertices.reserve(a_mesh->mNumVertices);
 
-	a_mesh->vVertices.push_back(vec3(length / 2, length / 2, length / 2));
-	a_mesh->vVertices.push_back(vec3(length / 2, -length / 2, length / 2));
-	a_mesh->vVertices.push_back(vec3(length / 2, length / 2, -length / 2));
-	a_mesh->vVertices.push_back(vec3(length / 2, -length / 2, -length / 2));
-	a_mesh->vVertices.push_back(vec3(-length / 2, length / 2, -length / 2));
-	a_mesh->vVertices.push_back(vec3(-length / 2, -length / 2, -length / 2));
-	a_mesh->vVertices.push_back(vec3(-length / 2, length / 2, length / 2));
-	a_mesh->vVertices.push_back(vec3(-length / 2, -length / 2, length / 2));
-	a_mesh->vVertices.push_back(vec3(length / 2, length / 2, length / 2));
-	a_mesh->vVertices.push_back(vec3(length / 2,  -length / 2, length / 2));
+	a_mesh->vVertices.push_back(vec3(length / 2 + x, length / 2 + y, length / 2 + z));
+	a_mesh->vVertices.push_back(vec3(length / 2 + x, -length / 2 + y, length / 2 + z));
+	a_mesh->vVertices.push_back(vec3(length / 2 + x, length / 2 + y, -length / 2 + z));
+	a_mesh->vVertices.push_back(vec3(length / 2 + x, -length / 2 + y, -length / 2 + z));
+	a_mesh->vVertices.push_back(vec3(-length / 2 + x, length / 2 + y, -length / 2 + z));
+	a_mesh->vVertices.push_back(vec3(-length / 2 + x, -length / 2 + y, -length / 2 + z));
+	a_mesh->vVertices.push_back(vec3(-length / 2 + x, length / 2 + y, length / 2 + z));
+	a_mesh->vVertices.push_back(vec3(-length / 2 + x, -length / 2 + y, length / 2 + z));
+	a_mesh->vVertices.push_back(vec3(length / 2 + x, length / 2 + y, length / 2 + z));
+	a_mesh->vVertices.push_back(vec3(length / 2 + x,  -length / 2 + y, length / 2 + z));
 
 	return a_mesh;
 }
 
 Mesh*
-Mesh::generateBoxOutlineTexCor(GLdouble length) {
-	Mesh* a_mesh = generateBoxOutline(length);
+Mesh::generateBoxOutlineTexCor(GLdouble length, GLint x, GLint y, GLint z) {
+	Mesh* a_mesh = generateBoxOutline(length, x, y, z);
 
 	a_mesh->vTexCoords.reserve(a_mesh->mNumVertices);
 
@@ -428,7 +428,7 @@ Mesh::generateBoxOutlineTexCor(GLdouble length) {
 }
 
 Mesh*
-Mesh::generateStar3D(GLdouble re, GLuint np, GLdouble h) {
+Mesh::generateStar3D(GLdouble re, GLuint np, GLdouble h, GLint _x, GLint _y, GLint _z) {
 	Mesh* a_mesh = new Mesh;
 
 	a_mesh->mPrimitive = GL_TRIANGLE_FAN;
@@ -436,7 +436,7 @@ Mesh::generateStar3D(GLdouble re, GLuint np, GLdouble h) {
 	a_mesh->mNumVertices = np * 2 + 2;
 	a_mesh->vVertices.reserve(a_mesh->mNumVertices);
 
-	a_mesh->vVertices.push_back(vec3(0, 0, 0));
+	a_mesh->vVertices.push_back(vec3(_x, _y, _z));
 
 	GLdouble a_alpha = 0;
 
@@ -445,12 +445,12 @@ Mesh::generateStar3D(GLdouble re, GLuint np, GLdouble h) {
 
 	for (int i = 0; i < np; ++i) {
 
-		a_mesh->vVertices.push_back(vec3(x, y, h));
+		a_mesh->vVertices.push_back(vec3(x + _x, y + _y, h + _z));
 
 		x = (re/2) * cos(radians(a_alpha + (360 / (np * 2))));
 		y = (re/2) * sin(radians(a_alpha + (360 / (np * 2))));
 
-		a_mesh->vVertices.push_back(vec3(x, y, h));
+		a_mesh->vVertices.push_back(vec3(x + _x, y + _y, h + _z));
 
 		a_alpha += 360 / np;
 
@@ -459,14 +459,14 @@ Mesh::generateStar3D(GLdouble re, GLuint np, GLdouble h) {
 
 	}
 
-	a_mesh->vVertices.push_back(vec3(x, y, h));
+	a_mesh->vVertices.push_back(vec3(x + _x, y + _y, h + _z));
 
 	return a_mesh;
 }
 
 Mesh*
-Mesh::generateStar3DTexCor(GLdouble re, GLuint np, GLdouble h) {
-	Mesh* a_mesh = generateStar3D(re, np, h);
+Mesh::generateStar3DTexCor(GLdouble re, GLuint np, GLdouble h, GLint _x, GLint _y, GLint _z) {
+	Mesh* a_mesh = generateStar3D(re, np, h, _x, _y, _z);
 
 	a_mesh->vTexCoords.reserve(a_mesh->mNumVertices);
 

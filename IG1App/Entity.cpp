@@ -251,9 +251,9 @@ Ground::Ground(GLdouble x, GLdouble z, GLuint rw, GLuint rh) {
 	load();
 }
 
-BoxOutline::BoxOutline(GLdouble length) {
+BoxOutline::BoxOutline(GLdouble length, GLint x, GLint y, GLint z) {
 	mShader = Shader::get("texture");
-	mMesh = Mesh::generateBoxOutlineTexCor(length);
+	mMesh = Mesh::generateBoxOutlineTexCor(length, x, y, z);
 	load();
 }
 
@@ -291,10 +291,10 @@ BoxOutline::render(mat4 const& modelViewMat) const
 	}
 }
 
-Star3D::Star3D(GLdouble re, GLuint np, GLdouble h) {
+Star3D::Star3D(GLdouble re, GLuint np, GLdouble h, GLint _x, GLint _y, GLint _z) {
 	mShader = Shader::get("texture");
-	mMesh = Mesh::generateStar3DTexCor(re, np, h);
-	mExtraMesh = Mesh::generateStar3DTexCor(re, np, -h);
+	mMesh = Mesh::generateStar3DTexCor(re, np, h, _x, _y, _z);
+	mExtraMesh = Mesh::generateStar3DTexCor(re, np, -h, _x, _y, _z);
 	load();
 	mExtraMesh->load();
 }
@@ -337,12 +337,12 @@ Star3D::update()
 	y /= a_vertices.size();
 	z /= a_vertices.size();
 
-	mModelMat = rotate(mModelMat, radians(1.0f), { 0, 1, 1 });
+	mModelMat = rotate(mModelMat, radians(1.0f), { 0, 1, 1});
 }
 
 GlassParapet::GlassParapet(float length) {
 	mShader = Shader::get("texture");
-	mMesh = Mesh::generateBoxOutlineTexCor(length);
+	mMesh = Mesh::generateBoxOutlineTexCor(length, 0, 0, 0);
 	load();
 }
 
@@ -360,5 +360,5 @@ Photo::Photo(float length) {
 
 void
 Photo::update() {
-	//mTexture->loadColorBuffer(800, 600);
+	mTexture->loadColorBuffer(800, 600);
 }

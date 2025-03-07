@@ -128,7 +128,7 @@ class BoxOutline : public EntityWithTexture
 {
 	Texture* mExtraTexture;
 public:
-	explicit BoxOutline(GLdouble length);
+	explicit BoxOutline(GLdouble length, GLint x, GLint y, GLint z);
 	void render(const glm::mat4& modelViewMat) const override;
 	inline void setExtraTexture(Texture* newText) { mExtraTexture = newText; }
 };
@@ -137,7 +137,7 @@ class Star3D : public EntityWithTexture
 {
 	Mesh* mExtraMesh;
 public:
-	explicit Star3D(GLdouble re, GLuint np, GLdouble h);
+	explicit Star3D(GLdouble re, GLuint np, GLdouble h, GLint _x, GLint _y, GLint _z);
 	inline ~Star3D() { mExtraMesh->unload(); delete mExtraMesh; mExtraMesh = nullptr; }
 	void render(const glm::mat4& modelViewMat) const override;
 	void update() override;
