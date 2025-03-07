@@ -20,6 +20,7 @@ public:
 	static Mesh* generateBoxOutline(GLdouble length);
 	static Mesh* generateBoxOutlineTexCor(GLdouble length);
 	static Mesh* generateStar3D(GLdouble re, GLuint np, GLdouble h);
+	static Mesh* generateStar3DTexCor(GLdouble re, GLuint np, GLdouble h);
 
 	Mesh();
 	virtual ~Mesh();

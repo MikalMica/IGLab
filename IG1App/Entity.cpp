@@ -80,7 +80,7 @@ EntityWithTexture::render(mat4 const& modelViewMat) const
 		mat4 aMat = modelViewMat * mModelMat; // glm matrix multiplication
 		mShader->use();
 
-		mShader->setUniform("modulate", mModelMat); // sets the modulate
+		mShader->setUniform("modulate", mModulate); // sets the modulate
 		upload(aMat);
 
 		if (mTexture != nullptr) mTexture->bind(); // binds the texture if it isn't nullptr
@@ -264,7 +264,7 @@ BoxOutline::render(mat4 const& modelViewMat) const
 		mat4 aMat = modelViewMat * mModelMat; // glm matrix multiplication
 		mShader->use();
 
-		mShader->setUniform("modulate", mModelMat); // sets the modulate
+		mShader->setUniform("modulate", mModulate); // sets the modulate
 		upload(aMat);
 
 		glEnable(GL_CULL_FACE);
@@ -292,9 +292,9 @@ BoxOutline::render(mat4 const& modelViewMat) const
 }
 
 Star3D::Star3D(GLdouble re, GLuint np, GLdouble h) {
-	mShader = Shader::get("simple");
-	mMesh = Mesh::generateStar3D(re, np, h);
-	mExtraMesh = Mesh::generateStar3D(re, np, -h);
+	mShader = Shader::get("texture");
+	mMesh = Mesh::generateStar3DTexCor(re, np, h);
+	mExtraMesh = Mesh::generateStar3DTexCor(re, np, -h);
 	load();
 	mExtraMesh->load();
 }
@@ -305,9 +305,16 @@ Star3D::render(mat4 const& modelViewMat) const
 	if (mMesh != nullptr) {
 		mat4 aMat = modelViewMat * mModelMat; // glm matrix multiplication
 		mShader->use();
-		mShader->setUniform("color", mColor);
+
+		mShader->setUniform("modulate", mModulate); // sets the modulate
+		upload(aMat);
+
+		if (mTexture != nullptr) mTexture->bind(); // binds the texture if it isn't nullptr
+
 		mMesh->render();
-		if(mExtraMesh != nullptr) mExtraMesh->render();
+		mExtraMesh->render();
+
+		if (mTexture != nullptr) mTexture->unbind(); // unbinds the texture
 	}
 }
 
@@ -330,5 +337,11 @@ Star3D::update()
 	y /= a_vertices.size();
 	z /= a_vertices.size();
 
-	mModelMat = glm::translate(mModelMat, vec3(1, 1, 0));
+	mModelMat = rotate(mModelMat, radians(1.0f), { 0, 1, 1 });
+}
+
+GlassParapet::GlassParapet(float length) {
+	mShader = Shader::get("texture");
+	mMesh = Mesh::generateBoxOutlineTexCor(length);
+	load();
 }

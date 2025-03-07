@@ -133,7 +133,7 @@ public:
 	inline void setExtraTexture(Texture* newText) { mExtraTexture = newText; }
 };
 
-class Star3D : public SingleColorEntity
+class Star3D : public EntityWithTexture
 {
 	Mesh* mExtraMesh;
 public:
@@ -141,5 +141,11 @@ public:
 	inline ~Star3D() { mExtraMesh->unload(); delete mExtraMesh; mExtraMesh = nullptr; }
 	void render(const glm::mat4& modelViewMat) const override;
 	void update() override;
+};
+
+class GlassParapet : public EntityWithTexture
+{
+public:
+	explicit GlassParapet(float length);
 };
 #endif //_H_Entities_H_
