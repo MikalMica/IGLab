@@ -41,5 +41,6 @@ Scene5::init()
 	//gObjects.push_back(a_box);
 	gObjects.push_back(new RGBAxes(100));
 	gObjects.push_back(a_glass);
+	gObjects.push_back(new Photo(100));
 	//gObjects.push_back(a_ground);
 }

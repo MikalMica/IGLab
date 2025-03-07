@@ -345,3 +345,20 @@ GlassParapet::GlassParapet(float length) {
 	mMesh = Mesh::generateBoxOutlineTexCor(length);
 	load();
 }
+
+Photo::Photo(float length) {
+	Texture* a_text = new Texture();
+	a_text->loadColorBuffer(800, 800);
+	setTexture(a_text);
+	a_text = nullptr;
+	mShader = Shader::get("texture");
+	mMesh = Mesh::generateRectangleTexCor(length, length, 1, 1);
+	// Rotates the rectangle to make it horizontal
+	mModelMat = glm::rotate(mModelMat, glm::radians(90.0f), glm::vec3(1, 0, 0));
+	load();
+}
+
+void
+Photo::update() {
+	//mTexture->loadColorBuffer(800, 600);
+}

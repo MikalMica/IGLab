@@ -148,4 +148,11 @@ class GlassParapet : public EntityWithTexture
 public:
 	explicit GlassParapet(float length);
 };
+
+class Photo : public EntityWithTexture
+{
+public:
+	explicit Photo(float length);
+	void update() override;
+};
 #endif //_H_Entities_H_
