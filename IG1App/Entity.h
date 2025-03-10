@@ -62,6 +62,7 @@ protected:
 	bool mModulate; //true if image is going to modulate with vertex colors
 public:
 	explicit EntityWithTexture();
+	~EntityWithTexture();
 	virtual void render(const glm::mat4& modelViewMat) const override;
 	inline void setTexture(Texture* newText) { mTexture = newText; }
 };
@@ -129,6 +130,7 @@ class BoxOutline : public EntityWithTexture
 	Texture* mExtraTexture;
 public:
 	explicit BoxOutline(GLdouble length, GLint x, GLint y, GLint z);
+	inline ~BoxOutline() { delete mExtraTexture; mExtraTexture = nullptr; }
 	void render(const glm::mat4& modelViewMat) const override;
 	inline void setExtraTexture(Texture* newText) { mExtraTexture = newText; }
 };

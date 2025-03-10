@@ -73,6 +73,11 @@ EntityWithTexture::EntityWithTexture() : mModulate(false), mTexture(nullptr)
 	mShader = Shader::get("texture");
 }
 
+EntityWithTexture::~EntityWithTexture() {
+	delete mTexture;
+	mTexture = nullptr;
+}
+
 void
 EntityWithTexture::render(mat4 const& modelViewMat) const
 {
@@ -297,6 +302,7 @@ Star3D::Star3D(GLdouble re, GLuint np, GLdouble h, GLint _x, GLint _y, GLint _z)
 	mExtraMesh = Mesh::generateStar3DTexCor(re, np, -h, _x, _y, _z);
 	load();
 	mExtraMesh->load();
+
 }
 
 void
@@ -323,21 +329,17 @@ Star3D::update()
 {
 	std::vector<glm::vec3> a_vertices = mMesh->vertices();
 
-	float x = 0.0f;
-	float y = 0.0f;
-	float z = 0.0f;
+	float x = a_vertices[0].x;
+	float y = a_vertices[0].y;
+	float z = a_vertices[0].z;
 
-	for (int i = 0; i < a_vertices.size(); ++i) {
-		x += a_vertices[i].x;
-		y += a_vertices[i].y;
-		z += a_vertices[i].z;
-	}
+	glm::mat4 mT = glm::translate(glm::mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), glm::vec3(-x, -y, -z));
+	glm::mat4 mR = glm::rotate(glm::mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), glm::radians(1.0f), glm::vec3(0, 1, 1));
+	glm::mat4 mT2 = glm::translate(glm::mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), glm::vec3(x, y, z));
 
-	x /= a_vertices.size();
-	y /= a_vertices.size();
-	z /= a_vertices.size();
-
-	mModelMat = rotate(mModelMat, radians(1.0f), { 0, 1, 1});
+	mModelMat = mT * mModelMat;
+	mModelMat = mR * mModelMat;
+	mModelMat = mT2 * mModelMat;
 }
 
 GlassParapet::GlassParapet(float length) {

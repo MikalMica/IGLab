@@ -50,4 +50,18 @@ Scene5::init()
 
 	gObjects.push_back(star);
 	star = nullptr;
+
+	//Creamos la cristalera
+	a_text = new Texture();
+	a_text->load("../assets/images/windowV.jpg", 100);
+
+	GlassParapet* glass = new GlassParapet(300);
+	glass->setTexture(a_text);
+
+	gObjects.push_back(glass);
+	glass = nullptr;
+
+	//Creamos la imagen de la pantalla
+	gObjects.push_back(new Photo(50));
+	
 }
