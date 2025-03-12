@@ -29,13 +29,13 @@ Scene5::init()
 
 	//Creamos una caja en una esquina del suelo
 	a_text = new Texture();
-	a_text->load("../assets/images/papelE.png");
+	a_text->load("../assets/images/container.jpg");
 
 	BoxOutline* box = new BoxOutline(50, 100, 25, 100);
 	box->setTexture(a_text);
 
 	a_text = new Texture();
-	a_text->load("../assets/images/container.jpg");
+	a_text->load("../assets/images/papelE.png");
 
 	box->setExtraTexture(a_text);
 	gObjects.push_back(box);
@@ -51,6 +51,9 @@ Scene5::init()
 	gObjects.push_back(star);
 	star = nullptr;
 
+	//Creamos la imagen de la pantalla
+	gObjects.push_back(new Photo(50, -5));
+
 	//Creamos la cristalera
 	a_text = new Texture();
 	a_text->load("../assets/images/windowV.jpg", 100);
@@ -60,8 +63,5 @@ Scene5::init()
 
 	gObjects.push_back(glass);
 	glass = nullptr;
-
-	//Creamos la imagen de la pantalla
-	gObjects.push_back(new Photo(50));
 	
 }

@@ -12,11 +12,11 @@ public:
 	static Mesh* createRGBAxes(GLdouble l); // creates a new 3D-RGB axes mesh
 	static Mesh* generateRegularPolygon(GLuint num, GLdouble r);
 	static Mesh* generateRGBTriangle(GLdouble r, glm::vec3 pos = glm::vec3(0, 0, 0));
-	static Mesh* generateRectangle(GLdouble w, GLdouble h);
+	static Mesh* generateRectangle(GLdouble w, GLdouble h, GLfloat y);
 	static Mesh* generateRGBRectangle(GLdouble w, GLdouble h);
 	static Mesh* generateCube(GLdouble length);
 	static Mesh* generateRGBCubeTriangles(GLdouble length);
-	static Mesh* generateRectangleTexCor(GLdouble w, GLdouble h, GLuint rw, GLuint rh);
+	static Mesh* generateRectangleTexCor(GLdouble w, GLdouble h, GLuint rw, GLuint rh, GLfloat y);
 	static Mesh* generateBoxOutline(GLdouble length, GLint x, GLint y , GLint z);
 	static Mesh* generateBoxOutlineTexCor(GLdouble length, GLint x, GLint y, GLint z);
 	static Mesh* generateStar3D(GLdouble re, GLuint np, GLdouble h, GLint _x, GLint _y, GLint _z);

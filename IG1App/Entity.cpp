@@ -250,7 +250,7 @@ RGBCube::RGBCube(GLdouble length){
 
 Ground::Ground(GLdouble x, GLdouble z, GLuint rw, GLuint rh) {
 	mShader = Shader::get("texture");
-	mMesh = Mesh::generateRectangleTexCor(x, z,rw, rh);
+	mMesh = Mesh::generateRectangleTexCor(x, z,rw, rh, 0);
 	// Rotates the rectangle to make it horizontal
 	mModelMat = glm::rotate(mModelMat, glm::radians(90.0f), glm::vec3(1, 0, 0));
 	load();
@@ -348,13 +348,38 @@ GlassParapet::GlassParapet(float length) {
 	load();
 }
 
-Photo::Photo(float length) {
+void
+GlassParapet::render(mat4 const& modelViewMat) const{
+	if (mMesh != nullptr) {
+		mat4 aMat = modelViewMat * mModelMat; // glm matrix multiplication
+		mShader->use();
+
+		mShader->setUniform("modulate", mModulate); // sets the modulate
+		upload(aMat);
+
+		if (mTexture != nullptr) mTexture->bind(); // binds the texture if it isn't nullptr
+
+		glDepthMask(GL_FALSE);
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		mMesh->render();
+
+		glDepthMask(GL_TRUE);
+		glDisable(GL_BLEND);
+
+		if (mTexture != nullptr) mTexture->unbind(); // unbinds the texture
+	}
+}
+
+Photo::Photo(float length, float y) {
 	Texture* a_text = new Texture();
 	a_text->loadColorBuffer(800, 800);
 	setTexture(a_text);
 	a_text = nullptr;
 	mShader = Shader::get("texture");
-	mMesh = Mesh::generateRectangleTexCor(length, length, 1, 1);
+	mMesh = Mesh::generateRectangleTexCor(length, length, 1, 1, y);
 	// Rotates the rectangle to make it horizontal
 	mModelMat = glm::rotate(mModelMat, glm::radians(90.0f), glm::vec3(1, 0, 0));
 	load();

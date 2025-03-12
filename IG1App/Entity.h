@@ -149,12 +149,13 @@ class GlassParapet : public EntityWithTexture
 {
 public:
 	explicit GlassParapet(float length);
+	void render(const glm::mat4& modelViewMat) const override;
 };
 
 class Photo : public EntityWithTexture
 {
 public:
-	explicit Photo(float length);
+	explicit Photo(float length, float y);
 	void update() override;
 };
 #endif //_H_Entities_H_
