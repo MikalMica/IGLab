@@ -185,7 +185,7 @@ Mesh::createRGBAxes(GLdouble l)
 }
 
 Mesh*
-Mesh::generateRectangle(GLdouble w, GLdouble h) {
+Mesh::generateRectangle(GLdouble w, GLdouble h, GLfloat y) {
 
 	Mesh* a_mesh = new Mesh;
 
@@ -194,17 +194,17 @@ Mesh::generateRectangle(GLdouble w, GLdouble h) {
 	a_mesh->mNumVertices = 4;
 	a_mesh->vVertices.reserve(a_mesh->mNumVertices);
 
-	a_mesh->vVertices.push_back(vec3(w / 2, -h / 2, 0));
-	a_mesh->vVertices.push_back(vec3(-w / 2, -h / 2, 0));
-	a_mesh->vVertices.push_back(vec3(w / 2, h / 2, 0));
-	a_mesh->vVertices.push_back(vec3(-w / 2, h / 2, 0));
+	a_mesh->vVertices.push_back(vec3(w / 2, -h / 2, y));
+	a_mesh->vVertices.push_back(vec3(-w / 2, -h / 2, y));
+	a_mesh->vVertices.push_back(vec3(w / 2, h / 2, y));
+	a_mesh->vVertices.push_back(vec3(-w / 2, h / 2, y));
 
 	return a_mesh;
 }
 
 Mesh*
 Mesh::generateRGBRectangle(GLdouble w, GLdouble h) {
-	Mesh* a_mesh = generateRectangle(w, h);
+	Mesh* a_mesh = generateRectangle(w, h, 0);
 
 	a_mesh->vColors.reserve(a_mesh->mNumVertices);
 
@@ -367,8 +367,8 @@ Mesh::generateRGBCubeTriangles(GLdouble length) {
 }
 
 Mesh*
-Mesh::generateRectangleTexCor(GLdouble w, GLdouble h, GLuint rw, GLuint rh) {
-	Mesh* a_mesh = generateRectangle(w, h);
+Mesh::generateRectangleTexCor(GLdouble w, GLdouble h, GLuint rw, GLuint rh, GLfloat y) {
+	Mesh* a_mesh = generateRectangle(w, h, y);
 
 	a_mesh->vTexCoords.reserve(a_mesh->mNumVertices);
 
