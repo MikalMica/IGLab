@@ -3,6 +3,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_access.hpp>
 
 using namespace glm;
 
@@ -27,6 +28,7 @@ Camera::uploadVM() const
 void
 Camera::setVM()
 {
+	setAxes();
 	mViewMat = lookAt(mEye, mLook, mUp); // glm::lookAt defines the view matrix
 }
 
@@ -114,4 +116,32 @@ Camera::upload() const
 	mViewPort->upload();
 	uploadVM();
 	uploadPM();
+}
+
+void 
+Camera::setAxes() {
+	mRight = row(mViewMat, 0);
+	mUpward = row(mViewMat, 1);
+	mFront = -row(mViewMat, 2);
+}
+
+void 
+Camera::moveLR(GLdouble cs) {
+	mEye += mRight * cs;
+	mLook += mRight * cs;
+	setVM();
+}
+
+void
+Camera::moveUD(GLdouble cs) {
+	mEye += mUpward * cs;
+	mLook += mUpward * cs;
+	setVM();
+}
+
+void
+Camera::moveFB(GLdouble cs) {
+	mEye += mFront * cs;
+	mLook += mFront * cs;
+	setVM();
 }

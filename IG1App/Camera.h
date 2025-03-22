@@ -36,10 +36,19 @@ public:
 	// transfers its viewport, the view matrix and projection matrix to the GPU
 	void upload() const;
 
+	// Moves the camera
+	void moveLR(GLdouble cs);
+	void moveFB(GLdouble cs);
+	void moveUD(GLdouble cs);
+
 protected:
 	glm::dvec3 mEye = {0.0, 0.0, 500.0}; // camera's position
 	glm::dvec3 mLook = {0.0, 0.0, 0.0};  // target's position
 	glm::dvec3 mUp = {0.0, 1.0, 0.0};    // the up vector
+
+	glm::dvec3 mRight = { 0,0,0 };
+	glm::dvec3 mUpward = { 0,0,0 };
+	glm::dvec3 mFront = { 0,0,0 };
 
 	glm::dmat4 mViewMat;   // view matrix = inverse of modeling matrix
 	void uploadVM() const; // transfers viewMat to the GPU
@@ -56,6 +65,7 @@ protected:
 
 	void setVM();
 	void setPM();
+	void setAxes();
 };
 
 #endif //_H_Camera_H_
