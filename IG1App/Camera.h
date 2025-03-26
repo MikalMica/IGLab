@@ -41,6 +41,20 @@ public:
 	void moveFB(GLdouble cs);
 	void moveUD(GLdouble cs);
 
+	// Changes projection
+	inline void changeProj() { bOrto = !bOrto; setPM();}
+
+	// Rotates the camera
+	void pitchReal(GLdouble cs);
+	void yawReal(GLdouble cs);
+	void rollReal(GLdouble cs);
+
+	// Orbits
+	void orbit(GLdouble incAng, GLdouble incY);
+
+	// Cential Camera
+	void setCenital();
+
 protected:
 	glm::dvec3 mEye = {0.0, 0.0, 500.0}; // camera's position
 	glm::dvec3 mLook = {0.0, 0.0, 0.0};  // target's position
@@ -66,6 +80,11 @@ protected:
 	void setVM();
 	void setPM();
 	void setAxes();
+
+	// Parameters for orbit
+	GLdouble mRadio;
+	GLdouble mAng;
+
 };
 
 #endif //_H_Camera_H_

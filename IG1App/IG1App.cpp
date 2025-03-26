@@ -35,7 +35,8 @@ IG1App::run() // enters the main event processing loop
 
 		// Redisplay the window if needed
 		if (mNeedsRedisplay) {
-			display();
+			if (!display2cams) display();
+			else display2c();
 			mNeedsRedisplay = false;
 		}
 
@@ -115,6 +116,9 @@ IG1App::iniWinOpenGL()
 	glfwSetCharCallback(mWindow, s_key);
 	glfwSetKeyCallback(mWindow, s_specialkey);
 	glfwSetWindowRefreshCallback(mWindow, s_display);
+	glfwSetMouseButtonCallback(mWindow, s_mouse);
+	glfwSetCursorPosCallback(mWindow, s_motion);
+	glfwSetScrollCallback(mWindow, s_mouseWheel);
 
 	// Error message callback (all messages)
 	glEnable(GL_DEBUG_OUTPUT);
@@ -148,6 +152,30 @@ IG1App::display() const
 
 	mScenes[mCurrentScene]->render(*mCamera); // uploads the viewport and camera to the GPU
 
+	glfwSwapBuffers(mWindow); // swaps the front and back buffer
+}
+
+void
+IG1App::display2c() const
+{ // double buffering
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clears the back buffer
+
+	Camera auxCamera = *mCamera;
+	Viewport auxVP = *mViewPort;
+
+	mViewPort->setSize(mWinW / 2, mWinH);
+	auxCamera.setSize(mViewPort->width(), mViewPort->height());
+	mViewPort->setPos(0, 0);
+
+	mScenes[mCurrentScene]->render(auxCamera); // uploads the viewport and camera to the GPU
+
+	mViewPort->setPos(mWinW / 2, 0);
+	auxCamera.setCenital();
+
+	mScenes[mCurrentScene]->render(auxCamera);
+
+	*mViewPort = auxVP;
 	glfwSwapBuffers(mWindow); // swaps the front and back buffer
 }
 
@@ -186,22 +214,29 @@ IG1App::key(unsigned int key)
 			mUpdateEnabled = !mUpdateEnabled;
 			break;
 		case 'a':
-			mCamera->moveLR(-1);
+			mCamera->moveLR(-5);
 			break;
 		case 'd':
-			mCamera->moveLR(1);
+			mCamera->moveLR(5);
 			break;
 		case 'w':
-			mCamera->moveUD(1);
+			mCamera->moveUD(5);
 			break;
 		case 's':
-			mCamera->moveUD(-1);
+			mCamera->moveUD(-5);
 			break;
 		case 'W':
-			mCamera->moveFB(1);
+			mCamera->moveFB(5);
 			break;
 		case 'S':
-			mCamera->moveFB(-1);
+			mCamera->moveFB(-5);
+			break;
+		case 'p':
+			mCamera->changeProj();
+			break;
+		case 'k':
+			display2cams = !display2cams;
+			mNeedsRedisplay = true;
 			break;
 		default:
 			if (key >= '0' && key <= '9' && !changeScene(key - '0')) {
@@ -232,21 +267,21 @@ IG1App::specialkey(int key, int scancode, int action, int mods)
 			break;
 		case GLFW_KEY_RIGHT:
 			if (mods == GLFW_MOD_CONTROL)
-				mCamera->pitch(-1); // rotates -1 on the X axis
+				mCamera->rollReal(-5); // rotates -1 on the X axis
 			else
-				mCamera->pitch(1); // rotates 1 on the X axis
+				mCamera->yawReal(5); // rotates 1 on the X axis
 			break;
 		case GLFW_KEY_LEFT:
 			if (mods == GLFW_MOD_CONTROL)
-				mCamera->yaw(1); // rotates 1 on the Y axis
+				mCamera->rollReal(5); // rotates 1 on the Y axis
 			else
-				mCamera->yaw(-1); // rotate -1 on the Y axis
+				mCamera->yawReal(-5); // rotate -1 on the Y axis
 			break;
 		case GLFW_KEY_UP:
-			mCamera->roll(1); // rotates 1 on the Z axis
+			mCamera->pitchReal(5); // rotates 1 on the Z axis
 			break;
 		case GLFW_KEY_DOWN:
-			mCamera->roll(-1); // rotates -1 on the Z axis
+			mCamera->pitchReal(-5); // rotates -1 on the Z axis
 			break;
 		default:
 			need_redisplay = false;
@@ -272,4 +307,39 @@ IG1App::changeScene(size_t sceneNr)
 	}
 
 	return true;
+}
+
+void 
+IG1App::mouse(int button, int action, int mods) {
+	/*mMouseButt = button;
+	double x, y, height;
+	glfwGetCursorPos(mWindow, &x, &height);
+	y = mViewPort->height() - height;
+	mMouseCoord = { x, y };*/
+}
+
+void 
+IG1App::motion(double x, double y) {
+	/*glm::dvec2 mp = {x - mMouseCoord.x, y - mMouseCoord.y};
+	mMouseCoord = { x, y };
+
+	if (mMouseButt == GLFW_MOUSE_BUTTON_LEFT) mCamera->orbit(mp.x * 0.05, mp.y);
+	else if (mMouseButt == GLFW_MOUSE_BUTTON_RIGHT) {
+		mCamera->moveUD(mp.y);
+		mCamera->moveLR(mp.x);
+	}
+
+	mNeedsRedisplay = true;*/
+}
+
+void 
+IG1App::mouseWheel(double dx, double dy) {
+	/*if (glfwGetKey(mWindow, GLFW_MOD_CONTROL)) {
+		mCamera->setScale(dy);
+	}
+	else {
+		mCamera->moveFB(dy);
+	}
+
+	mNeedsRedisplay = true;*/
 }

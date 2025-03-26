@@ -8,13 +8,15 @@
 using namespace glm;
 
 Camera::Camera(Viewport* vp)
-  : mViewMat(1.0)
-  , mProjMat(1.0)
-  , xRight(vp->width() / 2.0)
-  , xLeft(-xRight)
-  , yTop(vp->height() / 2.0)
-  , yBot(-yTop)
-  , mViewPort(vp)
+	: mViewMat(1.0)
+	, mProjMat(1.0)
+	, xRight(vp->width() / 2.0)
+	, xLeft(-xRight)
+	, yTop(vp->height() / 2.0)
+	, yBot(-yTop)
+	, mViewPort(vp)
+	, mRadio(1000)
+	, mAng(-45)
 {
 	setPM();
 }
@@ -28,8 +30,8 @@ Camera::uploadVM() const
 void
 Camera::setVM()
 {
-	setAxes();
 	mViewMat = lookAt(mEye, mLook, mUp); // glm::lookAt defines the view matrix
+	setAxes();
 }
 
 void
@@ -38,6 +40,8 @@ Camera::set2D()
 	mEye = {0, 0, 500};
 	mLook = {0, 0, 0};
 	mUp = {0, 1, 0};
+	mRadio = 1000;
+	mAng = -45;
 	setVM();
 }
 
@@ -47,6 +51,8 @@ Camera::set3D()
 	mEye = {500, 500, 500};
 	mLook = {0, 10, 0};
 	mUp = {0, 1, 0};
+	mRadio = 1000;
+	mAng = -45;
 	setVM();
 }
 
@@ -55,6 +61,7 @@ Camera::pitch(GLdouble a)
 {
 	mViewMat = rotate(mViewMat, glm::radians(a), glm::dvec3(1.0, 0, 0));
 	// glm::rotate returns mViewMat * rotationMatrix
+	setAxes();
 }
 
 void
@@ -62,6 +69,7 @@ Camera::yaw(GLdouble a)
 {
 	mViewMat = rotate(mViewMat, glm::radians(a), glm::dvec3(0, 1.0, 0));
 	// glm::rotate returns mViewMat * rotationMatrix
+	setAxes();
 }
 
 void
@@ -69,6 +77,7 @@ Camera::roll(GLdouble a)
 {
 	mViewMat = rotate(mViewMat, glm::radians(a), glm::dvec3(0, 0, 1.0));
 	// glm::rotate returns mViewMat * rotationMatrix
+	setAxes();
 }
 
 void
@@ -101,6 +110,14 @@ Camera::setPM()
 		                 mNearVal,
 		                 mFarVal);
 		// glm::ortho defines the orthogonal projection matrix
+	}
+	else {
+		mProjMat = frustum(xLeft * mScaleFact,
+						   xRight * mScaleFact,
+						   yBot * mScaleFact,
+						   yTop * mScaleFact,
+						   mNearVal+250,
+						   mFarVal);
 	}
 }
 
@@ -143,5 +160,43 @@ void
 Camera::moveFB(GLdouble cs) {
 	mEye += mFront * cs;
 	mLook += mFront * cs;
+	setVM();
+}
+
+void 
+Camera::pitchReal(GLdouble cs) {
+	mLook += mUpward * cs;
+	setVM();
+}
+
+void 
+Camera::yawReal(GLdouble cs) {
+	mLook += mRight * cs;
+	setVM();
+}
+
+void 
+Camera::rollReal(GLdouble cs) {
+	mLook += mFront * cs;
+	mUp += mRight * cs;
+	setVM();
+}
+
+void 
+Camera::orbit(GLdouble incAng, GLdouble incY) {
+	mAng += incAng;
+	mEye.x = mLook.x + cos(radians(mAng)) * mRadio;
+	mEye.z = mLook.z - sin(radians(mAng)) * mRadio;
+	mEye.y += incY;
+	setVM();
+}
+
+void
+Camera::setCenital() {
+	mEye = { 0, 500, 0 };
+	mLook = { 0, 0, 0 };
+	mUp = { 0, 0, 1 };
+	mRadio = 1000;
+	mAng = -45;
 	setVM();
 }
