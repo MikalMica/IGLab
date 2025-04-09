@@ -4,6 +4,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_access.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/rotate_vector.hpp>
 
 using namespace glm;
 
@@ -165,13 +167,14 @@ Camera::moveFB(GLdouble cs) {
 
 void 
 Camera::pitchReal(GLdouble cs) {
-	mLook += mUpward * cs;
+	mLook = mEye + rotate(mLook - mEye, glm::radians(cs), mRight);
+	mUp = rotate(mUp, radians(cs), mRight);
 	setVM();
 }
 
 void 
 Camera::yawReal(GLdouble cs) {
-	mLook += mRight * cs;
+	mLook += mRight * cs * 10.0;
 	setVM();
 }
 

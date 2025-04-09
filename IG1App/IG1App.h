@@ -80,7 +80,7 @@ protected:
 	bool display2cams = false;
 	double mNextUpdate = 0.0;
 	glm::dvec2 mMouseCoord;
-	int mMouseButt;
+	int mMouseButt = -50;
 };
 
 #endif //_H_IG1App_H_

@@ -311,16 +311,17 @@ IG1App::changeScene(size_t sceneNr)
 
 void 
 IG1App::mouse(int button, int action, int mods) {
-	/*mMouseButt = button;
+	if (action == GLFW_PRESS) mMouseButt = button;
+	else if (action == GLFW_RELEASE) mMouseButt = -50;
 	double x, y, height;
 	glfwGetCursorPos(mWindow, &x, &height);
 	y = mViewPort->height() - height;
-	mMouseCoord = { x, y };*/
+	mMouseCoord = { x, y };
 }
 
 void 
 IG1App::motion(double x, double y) {
-	/*glm::dvec2 mp = {x - mMouseCoord.x, y - mMouseCoord.y};
+	glm::dvec2 mp = {x - mMouseCoord.x, y - mMouseCoord.y};
 	mMouseCoord = { x, y };
 
 	if (mMouseButt == GLFW_MOUSE_BUTTON_LEFT) mCamera->orbit(mp.x * 0.05, mp.y);
@@ -329,17 +330,17 @@ IG1App::motion(double x, double y) {
 		mCamera->moveLR(mp.x);
 	}
 
-	mNeedsRedisplay = true;*/
+	mNeedsRedisplay = true;
 }
 
 void 
 IG1App::mouseWheel(double dx, double dy) {
-	/*if (glfwGetKey(mWindow, GLFW_MOD_CONTROL)) {
-		mCamera->setScale(dy);
+	if (glfwGetKey(mWindow, GLFW_KEY_LEFT_CONTROL)) {
+		mCamera->setScale(dy/10);
 	}
 	else {
-		mCamera->moveFB(dy);
+		mCamera->moveFB(dy * 10);
 	}
 
-	mNeedsRedisplay = true;*/
+	mNeedsRedisplay = true;
 }
