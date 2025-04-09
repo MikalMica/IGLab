@@ -158,4 +158,9 @@ public:
 	explicit Photo(float length, float y);
 	void update() override;
 };
+
+class Torus : public SingleColorEntity {
+public:
+	explicit Torus(GLdouble R, GLdouble r, GLuint nPoints = 40, GLuint nSamples = 40);
+};
 #endif //_H_Entities_H_

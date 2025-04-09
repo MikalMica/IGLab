@@ -10,7 +10,7 @@ class Mesh
 {
 public:
 	static Mesh* createRGBAxes(GLdouble l); // creates a new 3D-RGB axes mesh
-	static Mesh* generateRegularPolygon(GLuint num, GLdouble r);
+	static Mesh* generateRegularPolygon(GLuint num, GLdouble r, GLdouble x = 0, GLdouble y = 0);
 	static Mesh* generateRGBTriangle(GLdouble r, glm::vec3 pos = glm::vec3(0, 0, 0));
 	static Mesh* generateRectangle(GLdouble w, GLdouble h, GLfloat y);
 	static Mesh* generateRGBRectangle(GLdouble w, GLdouble h);
@@ -34,8 +34,8 @@ public:
 	std::vector<glm::vec3> const& vertices() const { return vVertices; };
 	std::vector<glm::vec4> const& colors() const { return vColors; };
 
-	void load();
-	void unload();
+	virtual void load();
+	virtual void unload();
 
 protected:
 	GLuint mPrimitive =

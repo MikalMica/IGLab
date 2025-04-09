@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "IndexMesh.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -388,4 +389,30 @@ Photo::Photo(float length, float y) {
 void
 Photo::update() {
 	mTexture->loadColorBuffer(800, 600);
+}
+
+Torus::Torus(GLdouble R, GLdouble r, GLuint nPoints, GLuint nSamples) {
+	mShader = Shader::get("simple");
+	// We get the profile points in a vector
+	std::vector<glm::vec2> vector;
+
+	GLdouble a_alpha = glm::radians(90.0f);
+
+	GLdouble x = r * cos(a_alpha) + R;
+	GLdouble y = r * sin(a_alpha);
+	vector.push_back(glm::vec2(x, y));
+
+	GLdouble a_spinOffset = glm::radians(360.0f / nPoints);
+
+	for (GLuint i = 1; i < nPoints; ++i) {
+		a_alpha += a_spinOffset;
+		GLdouble x = r * cos(a_alpha) + R;
+		GLdouble y = r * sin(a_alpha);
+		vector.push_back(glm::vec2(x, y));
+	}
+
+	// generates the rev mesh
+	mMesh = IndexMesh::generateByRevolution(vector, nSamples);
+
+	load();
 }

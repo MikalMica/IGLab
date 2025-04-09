@@ -28,7 +28,7 @@ Mesh::draw() const
 	  size()); // primitive graphic, first index and number of elements to be rendered
 }
 
-Mesh* Mesh::generateRegularPolygon(GLuint num, GLdouble r) {
+Mesh* Mesh::generateRegularPolygon(GLuint num, GLdouble r, GLdouble _x, GLdouble _y) {
 	
 	Mesh* a_mesh = new Mesh();
 
@@ -39,16 +39,16 @@ Mesh* Mesh::generateRegularPolygon(GLuint num, GLdouble r) {
 
 	GLdouble a_alpha = glm::radians(90.0f);
 
-	GLdouble x = r * cos(a_alpha);
-	GLdouble y = r * sin(a_alpha);
+	GLdouble x = r * cos(a_alpha) + _x;
+	GLdouble y = r * sin(a_alpha) + _y;
 	a_mesh->vVertices.push_back(glm::vec3(x, y, 0));
 
 	GLdouble a_spinOffset = glm::radians(360.0f / num);
 
 	for (GLuint i = 1; i < num; ++i) {
 		a_alpha += a_spinOffset;
-		GLdouble x = r * cos(a_alpha);
-		GLdouble y = r * sin(a_alpha);
+		GLdouble x = r * cos(a_alpha) + _x;
+		GLdouble y = r * sin(a_alpha) + _y;
 		a_mesh->vVertices.push_back(glm::vec3(x, y, 0));
 	}
 
