@@ -151,6 +151,7 @@ Mesh::unload()
 
 		if (mTCO != NONE) glDeleteBuffers(1, &mTCO);
 		if (mNBO != NONE) glDeleteBuffers(1, &mNBO);
+		mNBO = NONE;
 	}
 }
 

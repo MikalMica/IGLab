@@ -48,7 +48,7 @@ protected:
 	virtual void draw() const;
 
 	GLuint mVAO;  // vertex array object
-	GLuint mNBO; // NBA en masculino
+	GLuint mNBO;
 
 private:
 	GLuint mVBO;  // vertex buffer object

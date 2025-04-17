@@ -70,6 +70,7 @@ IndexMesh::generateIndexedBox(GLdouble L) {
 	mesh->mPrimitive = GL_TRIANGLES;
 	mesh->vVertices.reserve(8);
 	mesh->vIndexes.reserve(36);
+	mesh->vNormals.reserve(8);
 
 	// Push back the vertices of the cube
 	mesh->vVertices.push_back({ L / 2, L / 2, -L / 2 }); // 0 ++-
@@ -80,16 +81,6 @@ IndexMesh::generateIndexedBox(GLdouble L) {
 	mesh->vVertices.push_back({ -L / 2, -L / 2, L / 2 }); // 5 --+
 	mesh->vVertices.push_back({ -L / 2, L / 2, -L / 2 }); // 6 -+-
 	mesh->vVertices.push_back({ -L / 2, -L / 2, -L / 2 }); // 7 ---
-
-	// Set the normals
-	mesh->vNormals.push_back(glm::normalize(glm::vec3(1, 1, -2)));
-	mesh->vNormals.push_back(glm::normalize(glm::vec3(2, -1, -1)));
-	mesh->vNormals.push_back(glm::normalize(glm::vec3(2, 2, 1)));
-	mesh->vNormals.push_back(glm::normalize(glm::vec3(1, -2, 2)));
-	mesh->vNormals.push_back(glm::normalize(glm::vec3(-1, 1, 2)));
-	mesh->vNormals.push_back(glm::normalize(glm::vec3(-2, -1, 1)));
-	mesh->vNormals.push_back(glm::normalize(glm::vec3(-2, 2, -1)));
-	mesh->vNormals.push_back(glm::normalize(glm::vec3(-1, -2, -2)));
 
 	// Set the indexes of the triangles
 
@@ -152,6 +143,17 @@ IndexMesh::generateIndexedBox(GLdouble L) {
 	mesh->vIndexes.push_back(3);
 	mesh->vIndexes.push_back(7);
 	mesh->vIndexes.push_back(5);
+
+	// Set the normals
+	mesh->vNormals.push_back(glm::normalize(glm::vec3(1, 1, -2)));
+	mesh->vNormals.push_back(glm::normalize(glm::vec3(2, -1, -1)));
+	mesh->vNormals.push_back(glm::normalize(glm::vec3(2, 2, 1)));
+	mesh->vNormals.push_back(glm::normalize(glm::vec3(1, -2, 2)));
+	mesh->vNormals.push_back(glm::normalize(glm::vec3(-1, 1, 2)));
+	mesh->vNormals.push_back(glm::normalize(glm::vec3(-2, -1, 1)));
+	mesh->vNormals.push_back(glm::normalize(glm::vec3(-2, 2, -1)));
+	mesh->vNormals.push_back(glm::normalize(glm::vec3(-1, -2, -2)));
+
 
 	return mesh;
 }

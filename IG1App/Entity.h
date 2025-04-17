@@ -57,6 +57,7 @@ public:
 };
 
 class ColorMaterialEntity : public SingleColorEntity {
+	Shader* mShaderAux;
 public:
 	ColorMaterialEntity(glm::vec4 color = {1, 1, 1, 1});
 	void render(const glm::mat4& modelViewMat) const override;
