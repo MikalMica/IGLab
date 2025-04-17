@@ -82,14 +82,14 @@ IndexMesh::generateIndexedBox(GLdouble L) {
 	mesh->vVertices.push_back({ -L / 2, -L / 2, -L / 2 }); // 7 ---
 
 	// Set the normals
-	mesh->vNormals.push_back({1, 1, -2});
-	mesh->vNormals.push_back({2, -1, -1});
-	mesh->vNormals.push_back({2, 2, 1});
-	mesh->vNormals.push_back({1, -2, 2});
-	mesh->vNormals.push_back({-1, 1, 2});
-	mesh->vNormals.push_back({-2, -1, 1});
-	mesh->vNormals.push_back({-2, 2, -1});
-	mesh->vNormals.push_back({-1, -2, -2});
+	mesh->vNormals.push_back(glm::normalize(glm::vec3(1, 1, -2)));
+	mesh->vNormals.push_back(glm::normalize(glm::vec3(2, -1, -1)));
+	mesh->vNormals.push_back(glm::normalize(glm::vec3(2, 2, 1)));
+	mesh->vNormals.push_back(glm::normalize(glm::vec3(1, -2, 2)));
+	mesh->vNormals.push_back(glm::normalize(glm::vec3(-1, 1, 2)));
+	mesh->vNormals.push_back(glm::normalize(glm::vec3(-2, -1, 1)));
+	mesh->vNormals.push_back(glm::normalize(glm::vec3(-2, 2, -1)));
+	mesh->vNormals.push_back(glm::normalize(glm::vec3(-1, -2, -2)));
 
 	// Set the indexes of the triangles
 

@@ -435,8 +435,8 @@ ColorMaterialEntity::render(const glm::mat4& modelViewMat) const {
 	}*/
 
 	if (mMesh != nullptr) {
-		mShader->setUniform("normals", true);
 		mShader->use();
+		mShader->setUniform("normals", mModelMat);
 		mMesh->render();
 	}
 
