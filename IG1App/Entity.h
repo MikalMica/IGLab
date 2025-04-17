@@ -56,6 +56,12 @@ public:
 	void render(const glm::mat4& modelViewMat) const override;
 };
 
+class ColorMaterialEntity : public SingleColorEntity {
+public:
+	ColorMaterialEntity(glm::vec4 color = {1, 1, 1, 1});
+	void render(const glm::mat4& modelViewMat) const override;
+};
+
 class EntityWithTexture : public Abs_Entity {
 protected:
 	Texture* mTexture; //Texture to be rendered
@@ -162,5 +168,10 @@ public:
 class Torus : public SingleColorEntity {
 public:
 	explicit Torus(GLdouble R, GLdouble r, GLuint nPoints = 40, GLuint nSamples = 40);
+};
+
+class IndexedBox : public ColorMaterialEntity {
+public:
+	explicit IndexedBox(GLdouble L);
 };
 #endif //_H_Entities_H_

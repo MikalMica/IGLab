@@ -44,9 +44,11 @@ protected:
 	std::vector<glm::vec3> vVertices; // vertex array
 	std::vector<glm::vec4> vColors;   // color array
 	std::vector<glm::vec2> vTexCoords;
+	std::vector<glm::vec3> vNormals; // normals of the mesh
 	virtual void draw() const;
 
 	GLuint mVAO;  // vertex array object
+	GLuint mNBO; // NBA en masculino
 
 private:
 	GLuint mVBO;  // vertex buffer object

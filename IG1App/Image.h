@@ -24,6 +24,7 @@ public:
 	// Loading
 	void load(const std::string& file_name);
 	void load(const rgba_color* data, GLsizei width, GLsizei height);
+	void reserve(GLsizei width, GLsizei height);
 
 	// Modifying
 	void setAlpha(GLubyte alpha);
@@ -37,6 +38,7 @@ public:
 	GLsizei height() const { return height_; }
 
 	const rgba_color* data() const { return data_; }
+	rgba_color* data() { return data_; }
 
 	bool isNull() const { return width_ == 0 || height_ == 0; }
 

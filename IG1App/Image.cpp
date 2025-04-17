@@ -95,10 +95,11 @@ Image::load(const string& filename)
 	// Loads pixel data with stb_image into the attributes
 
 	int width, height, channels;
+	stbi_set_flip_vertically_on_load(true);
 	unsigned char* data = stbi_load(filename.c_str(), &width, &height, &channels, 4);
 
 	if (data == nullptr)
-		throw std::logic_error("Image::load(string&): ERROR: cannot load image: "s + stbi_failure_reason());
+		throw std::logic_error("Image::load(string&): ERROR: cannot load image: " + filename + ": " + stbi_failure_reason());
 
 	width_ = width;
 	height_ = height;
@@ -110,14 +111,19 @@ Image::load(const string& filename)
 void
 Image::load(const rgba_color* data, GLsizei width, GLsizei height)
 {
+	reserve(width, height);
+	memcpy(data_, data, width * height * sizeof(rgba_color));
+}
 
+void
+Image::reserve(GLsizei width, GLsizei height)
+{
 	destroy(); // clean previous image
 
 	width_ = width;
 	height_ = height;
 	fromSTB = false;
-
-	memcpy(data_, data, width * height * sizeof(rgba_color));
+	data_ = new rgba_color[width * height];
 }
 
 void

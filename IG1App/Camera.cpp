@@ -27,6 +27,8 @@ void
 Camera::uploadVM() const
 {
 	Shader::setUniform4All("modelView", mViewMat);
+	glm::mat4 matrix = mViewMat * glm::dmat4({ -1, 0, 0, 0 }, { 0, -1, 0, 0 }, { 0, 0, -1, 0 }, { 0, 0, 0, 1 });
+	Shader::setUniform4All("LightDir", matrix);
 }
 
 void

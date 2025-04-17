@@ -416,3 +416,29 @@ Torus::Torus(GLdouble R, GLdouble r, GLuint nPoints, GLuint nSamples) {
 
 	load();
 }
+
+ColorMaterialEntity::ColorMaterialEntity(glm::vec4 color) : SingleColorEntity(color) {
+	mShader = Shader::get("simple_light");
+	mShader->use();
+}
+
+void
+ColorMaterialEntity::render(const glm::mat4& modelViewMat) const {
+
+	SingleColorEntity::render(modelViewMat);
+
+	if (mMesh != nullptr) {
+		mat4 aMat = modelViewMat * mModelMat; // glm matrix multiplication
+		mShader->use();
+		mShader->setUniform("normals", {1, 1, 1, 1});
+		mMesh->render();
+	}
+
+
+}
+
+IndexedBox::IndexedBox(GLdouble L ) : ColorMaterialEntity({0, 1, 0, 1}) {
+	mMesh = IndexMesh::generateIndexedBox(L);
+
+	load();
+}

@@ -1,4 +1,7 @@
 #include "IndexMesh.h"
+#include <iostream>
+
+using namespace std;
 
 void 
 IndexMesh::load() {
@@ -45,6 +48,110 @@ IndexMesh::generateByRevolution(
 			mesh->vVertices.emplace_back(p.x * c, p.y, -p.x * s);
 		}
 	}
+
+	for (int i = 0; i < nSamples; ++i) // caras i a i + 1
+		for (int j = 0; j < tamPerfil - 1; ++j) { // una cara
+			if (profile[j].x != 0.0) // triángulo inferior
+				for (auto [s, t] : { pair{i, j}, {i, j + 1}, {i + 1, j} })
+					mesh->vIndexes.push_back(s * tamPerfil + t);
+			if (profile[j + 1].x != 0.0) // triángulo superior
+				for (auto [s, t] : { pair{i, j + 1}, {i + 1, j + 1}, {i + 1, j} })
+					mesh->vIndexes.push_back(s * tamPerfil + t);
+		}
+	mesh->mNumVertices = mesh->vVertices.size();
+
+	return mesh;
+}
+
+IndexMesh* 
+IndexMesh::generateIndexedBox(GLdouble L) {
+
+	IndexMesh* mesh = new IndexMesh;
+	mesh->mPrimitive = GL_TRIANGLES;
+	mesh->vVertices.reserve(8);
+	mesh->vIndexes.reserve(36);
+
+	// Push back the vertices of the cube
+	mesh->vVertices.push_back({ L / 2, L / 2, -L / 2 }); // 0 ++-
+	mesh->vVertices.push_back({ L / 2, -L / 2, -L / 2}); // 1 +--
+	mesh->vVertices.push_back({ L / 2, L / 2, L / 2 }); // 2 +++
+	mesh->vVertices.push_back({ L / 2, -L / 2, L / 2 }); // 3 +-+
+	mesh->vVertices.push_back({ -L / 2, L / 2, L / 2 }); // 4 -++
+	mesh->vVertices.push_back({ -L / 2, -L / 2, L / 2 }); // 5 --+
+	mesh->vVertices.push_back({ -L / 2, L / 2, -L / 2 }); // 6 -+-
+	mesh->vVertices.push_back({ -L / 2, -L / 2, -L / 2 }); // 7 ---
+
+	// Set the normals
+	mesh->vNormals.push_back({1, 1, -2});
+	mesh->vNormals.push_back({2, -1, -1});
+	mesh->vNormals.push_back({2, 2, 1});
+	mesh->vNormals.push_back({1, -2, 2});
+	mesh->vNormals.push_back({-1, 1, 2});
+	mesh->vNormals.push_back({-2, -1, 1});
+	mesh->vNormals.push_back({-2, 2, -1});
+	mesh->vNormals.push_back({-1, -2, -2});
+
+	// Set the indexes of the triangles
+
+	// Triangle 1
+	mesh->vIndexes.push_back(0);
+	mesh->vIndexes.push_back(1);
+	mesh->vIndexes.push_back(2);
+
+	// Triangle 2
+	mesh->vIndexes.push_back(2);
+	mesh->vIndexes.push_back(1);
+	mesh->vIndexes.push_back(3);
+
+	// Triangle 3
+	mesh->vIndexes.push_back(2);
+	mesh->vIndexes.push_back(3);
+	mesh->vIndexes.push_back(4);
+
+	// Triangle 4
+	mesh->vIndexes.push_back(4);
+	mesh->vIndexes.push_back(3);
+	mesh->vIndexes.push_back(5);
+
+	// Triangle 5
+	mesh->vIndexes.push_back(4);
+	mesh->vIndexes.push_back(5);
+	mesh->vIndexes.push_back(6);
+
+	// Triangle 6
+	mesh->vIndexes.push_back(6);
+	mesh->vIndexes.push_back(5);
+	mesh->vIndexes.push_back(7);
+
+	// Triangle 7
+	mesh->vIndexes.push_back(6);
+	mesh->vIndexes.push_back(7);
+	mesh->vIndexes.push_back(0);
+
+	// Triangle 8
+	mesh->vIndexes.push_back(0);
+	mesh->vIndexes.push_back(7);
+	mesh->vIndexes.push_back(1);
+
+	// Triangle 9
+	mesh->vIndexes.push_back(4);
+	mesh->vIndexes.push_back(6);
+	mesh->vIndexes.push_back(2);
+
+	// Triangle 10
+	mesh->vIndexes.push_back(2);
+	mesh->vIndexes.push_back(6);
+	mesh->vIndexes.push_back(0);
+
+	// Triangle 11
+	mesh->vIndexes.push_back(1);
+	mesh->vIndexes.push_back(7);
+	mesh->vIndexes.push_back(3);
+
+	// Triangle 12
+	mesh->vIndexes.push_back(3);
+	mesh->vIndexes.push_back(7);
+	mesh->vIndexes.push_back(5);
 
 	return mesh;
 }
