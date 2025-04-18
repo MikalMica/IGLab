@@ -27,8 +27,8 @@ public:
 	void setModelMat(glm::mat4 const& aMat) { mModelMat = aMat; };
 
 	// load or unload entity data into the GPU
-	void load();
-	void unload();
+	virtual void load();
+	virtual void unload();
 
 protected:
 	Mesh* mMesh = nullptr; // the mesh
@@ -72,6 +72,20 @@ public:
 	~EntityWithTexture();
 	virtual void render(const glm::mat4& modelViewMat) const override;
 	inline void setTexture(Texture* newText) { mTexture = newText; }
+};
+
+class CompoundEntity : Abs_Entity {
+protected:
+	std::vector<Abs_Entity*> gObjects;
+public:
+	void AddEntity(Abs_Entity* ac);
+	explicit CompoundEntity();
+	~CompoundEntity();
+
+	void render(const glm::mat4& modelViewMat) const override;
+	void update() override;
+	void load() override;
+	void unload() override;
 };
 
 class RGBAxes : public EntityWithColors
@@ -166,7 +180,7 @@ public:
 	void update() override;
 };
 
-class Torus : public SingleColorEntity {
+class Torus : public ColorMaterialEntity {
 public:
 	explicit Torus(GLdouble R, GLdouble r, GLuint nPoints = 40, GLuint nSamples = 40);
 };
@@ -174,5 +188,30 @@ public:
 class IndexedBox : public ColorMaterialEntity {
 public:
 	explicit IndexedBox(GLdouble L);
+};
+
+class Sphere : public ColorMaterialEntity {
+public:
+	explicit Sphere(GLdouble radius, GLuint nParalels, GLuint nMeridian);
+};
+
+class Disk : public ColorMaterialEntity {
+public:
+	explicit Disk(GLdouble R, GLdouble r, GLuint nRings, GLuint nSample);
+};
+
+class Cone : public ColorMaterialEntity {
+public:
+	explicit Cone(GLdouble h, GLdouble r, GLdouble R, GLuint nRings, GLuint nSamples);
+};
+
+class AdvancedTIE : public CompoundEntity {
+public:
+	explicit AdvancedTIE() {}
+};
+
+class AdvancedTIEWing : public EntityWithTexture {
+public:
+	explicit AdvancedTIEWing(GLdouble width, GLdouble height, GLdouble profundity, GLdouble x, GLdouble y, GLdouble z);
 };
 #endif //_H_Entities_H_

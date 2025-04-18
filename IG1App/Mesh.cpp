@@ -510,3 +510,35 @@ Mesh::generateStar3DTexCor(GLdouble re, GLuint np, GLdouble h, GLint _x, GLint _
 
 	return a_mesh;
 }
+
+Mesh*
+Mesh::generateTIEWing(GLdouble width, GLdouble height, GLdouble profundity, GLdouble x, GLdouble y, GLdouble z) {
+	Mesh* mesh = new Mesh();
+
+	mesh->mPrimitive = GL_TRIANGLE_STRIP;
+	mesh->mNumVertices = 8;
+	mesh->vVertices.reserve(8);
+
+	mesh->vVertices.push_back({ x - width / 2, y + height, z + profundity / 2 });
+	mesh->vVertices.push_back({ x - width / 2, y + height, z - profundity / 2 });
+	mesh->vVertices.push_back({ x, y + height / 2, z + profundity/2});
+	mesh->vVertices.push_back({ x, y + height / 2, z - profundity / 2 });
+	mesh->vVertices.push_back({ x, y - height / 2, z + profundity / 2 });
+	mesh->vVertices.push_back({ x, y - height / 2, z - profundity / 2 });
+	mesh->vVertices.push_back({ x - width / 2, y - height, z + profundity / 2 });
+	mesh->vVertices.push_back({ x - width / 2, y - height, z - profundity / 2 });
+
+	mesh->vTexCoords.reserve(8);
+
+	mesh->vTexCoords.emplace_back(vec2(0.0f, 1.0f));
+	mesh->vTexCoords.emplace_back(vec2(0.0f, 0.0f));
+	mesh->vTexCoords.emplace_back(vec2(0.33f, 1.0f));
+	mesh->vTexCoords.emplace_back(vec2(0.33f, 0.0f));
+	mesh->vTexCoords.emplace_back(vec2(0.66f, 1.0f));
+	mesh->vTexCoords.emplace_back(vec2(0.66f, 0.0f));
+	mesh->vTexCoords.emplace_back(vec2(1.0f, 1.0f));
+	mesh->vTexCoords.emplace_back(vec2(1.0f, 0.0f));
+
+	return mesh;
+
+}
