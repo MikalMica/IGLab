@@ -18,8 +18,6 @@ public:
 		GLfloat angleMax = 2 * std::numbers::pi);
 
 	static IndexMesh* generateIndexedBox(GLdouble L);
-	
-	void buildNormalVectors();
 
 	void load() override;
 	void unload() override;
