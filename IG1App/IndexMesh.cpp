@@ -155,3 +155,9 @@ IndexMesh::generateIndexedBox(GLdouble L) {
 
 	return mesh;
 }
+
+void
+IndexMesh::buildNormalVectors()
+{
+
+}

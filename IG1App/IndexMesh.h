@@ -14,7 +14,10 @@ public:
 	static IndexMesh* generateByRevolution(
 		const std::vector<glm::vec2>& profile, GLuint nSamples,
 		GLfloat angleMax = 2 * std::numbers::pi);
+
 	static IndexMesh* generateIndexedBox(GLdouble L);
+	
+	void buildNormalVectors();
 
 	void load() override;
 	void unload() override;
