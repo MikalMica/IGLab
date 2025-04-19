@@ -419,7 +419,7 @@ Torus::Torus(GLdouble R, GLdouble r, GLuint nPoints, GLuint nSamples) {
 
 ColorMaterialEntity::ColorMaterialEntity(glm::vec4 color) : SingleColorEntity(color) {
 	mShader = Shader::get("simple_light");
-	mShader->use();
+	mShaderAux = Shader::get("normals");
 }
 
 void
@@ -428,9 +428,11 @@ ColorMaterialEntity::render(const glm::mat4& modelViewMat) const {
 	SingleColorEntity::render(modelViewMat);
 
 	if (mMesh != nullptr) {
-		mat4 aMat = modelViewMat * mModelMat; // glm matrix multiplication
-		mShader->use();
-		mShader->setUniform("normals", {1, 1, 1, 1});
+
+		mat4 bmat = modelViewMat * mModelMat;
+		mShaderAux->use();
+		mShaderAux->setUniform("normals", modelViewMat);
+		upload(bmat);
 		mMesh->render();
 	}
 
@@ -439,6 +441,113 @@ ColorMaterialEntity::render(const glm::mat4& modelViewMat) const {
 
 IndexedBox::IndexedBox(GLdouble L ) : ColorMaterialEntity({0, 1, 0, 1}) {
 	mMesh = IndexMesh::generateIndexedBox(L);
-
 	load();
+}
+
+Sphere::Sphere(GLdouble radius, GLuint nParalels, GLuint nMeridians) {
+	std::vector<glm::vec2> vector;
+
+	GLdouble segmentDistance = glm::radians(180.0 / nMeridians);
+	GLdouble angle = glm::radians(90.0);
+
+	for (int i = 0; i <= nMeridians; ++i) {
+		GLdouble x = radius * cos(angle);
+		GLdouble y = radius * sin(angle);
+
+		vector.push_back({ x, y });
+		angle += segmentDistance;
+	}
+
+	mMesh = IndexMesh::generateByRevolution(vector, nParalels);
+	load();
+}
+
+Disk::Disk(GLdouble R, GLdouble r, GLuint nRings, GLuint nSamples) {
+	std::vector<glm::vec2> vector;
+
+	GLdouble width = R - r;
+	GLdouble distanceRings = width / nRings;
+	GLdouble distance = r;
+
+	for (int i = 0; i < nRings; ++i) {
+		vector.push_back({ distance, 0 });
+		distance += distanceRings;
+	}
+
+	mMesh = IndexMesh::generateByRevolution(vector, nSamples);
+	load();
+}
+
+Cone::Cone(GLdouble h, GLdouble r, GLdouble R, GLuint nRings, GLuint nSamples) {
+	std::vector<glm::vec2> vector;
+
+	GLdouble xOffset = R - r / nRings;
+	GLdouble yOffset = h / nRings;
+
+	GLdouble x = R;
+	GLdouble y = h/2;
+
+	for (int i = 0; i <= nRings; ++i) {
+		
+		vector.push_back({ x, y });
+
+		x += xOffset;
+		y -= yOffset;
+	}
+
+	mMesh = IndexMesh::generateByRevolution(vector, nSamples);
+	load();
+}
+
+CompoundEntity::CompoundEntity() : Abs_Entity() {
+
+}
+
+CompoundEntity::~CompoundEntity() {
+
+	for (Abs_Entity* el : gObjects)
+		delete el;
+
+	gObjects.clear();
+
+}
+
+void
+CompoundEntity::render(const glm::mat4& modelViewMat) const {
+	mat4 aMat = modelViewMat * mModelMat;
+
+	for (auto object : gObjects) {
+		object->render(aMat);
+	}
+}
+
+void
+CompoundEntity::update() {
+
+	for (auto object : gObjects) {
+		object->update();
+	}
+}
+
+void
+CompoundEntity::load() {
+
+	for (auto object : gObjects) {
+		object->load();
+	}
+}
+
+void
+CompoundEntity::unload() {
+
+	for (auto object : gObjects) {
+		object->unload();
+	}
+}
+
+AdvancedTIEWing::AdvancedTIEWing(GLdouble width, GLdouble height, GLdouble profundity, GLdouble x, GLdouble y, GLdouble z) {
+	mShader = Shader::get("texture");
+	mMesh = Mesh::generateTIEWing(width, height, profundity, x, y, z);
+	load();
+
 }

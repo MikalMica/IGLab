@@ -10,6 +10,8 @@ class IndexMesh : public Mesh
 protected:
 	void draw() const override;
 
+	void buildNormalVectors();
+
 public:
 	static IndexMesh* generateByRevolution(
 		const std::vector<glm::vec2>& profile, GLuint nSamples,

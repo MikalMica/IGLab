@@ -21,6 +21,7 @@ public:
 	static Mesh* generateBoxOutlineTexCor(GLdouble length, GLint x, GLint y, GLint z);
 	static Mesh* generateStar3D(GLdouble re, GLuint np, GLdouble h, GLint _x, GLint _y, GLint _z);
 	static Mesh* generateStar3DTexCor(GLdouble re, GLuint np, GLdouble h, GLint _x, GLint _y, GLint _z);
+	static Mesh* generateTIEWing(GLdouble width, GLdouble height, GLdouble profundity,GLdouble x, GLdouble y, GLdouble z);
 
 	Mesh();
 	virtual ~Mesh();
@@ -48,7 +49,7 @@ protected:
 	virtual void draw() const;
 
 	GLuint mVAO;  // vertex array object
-	GLuint mNBO; // NBA en masculino
+	GLuint mNBO;
 
 private:
 	GLuint mVBO;  // vertex buffer object

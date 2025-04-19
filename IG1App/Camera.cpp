@@ -27,14 +27,18 @@ void
 Camera::uploadVM() const
 {
 	Shader::setUniform4All("modelView", mViewMat);
-	glm::mat4 matrix = mViewMat * glm::dmat4({ -1, 0, 0, 0 }, { 0, -1, 0, 0 }, { 0, 0, -1, 0 }, { 0, 0, 0, 1 });
-	Shader::setUniform4All("LightDir", matrix);
+
+	Shader* light = Shader::get("simple_light");
+	light->use();
+	light->setUniform("lightDir",
+		glm::vec4(glm::normalize(vec3(mViewMat * vec4(-1, -1, -1, 0))), 0));
 }
 
 void
 Camera::setVM()
 {
 	mViewMat = lookAt(mEye, mLook, mUp); // glm::lookAt defines the view matrix
+	Shader::setUniform4All("LightDir", mViewMat * dmat4({ -1, -1, -1, 0 }));
 	setAxes();
 }
 

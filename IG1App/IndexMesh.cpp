@@ -38,6 +38,7 @@ IndexMesh::generateByRevolution(
 	mesh->mPrimitive = GL_TRIANGLES;
 	int tamPerfil = profile.size();
 	mesh->vVertices.reserve(nSamples * tamPerfil);
+	mesh->mNumVertices = nSamples * tamPerfil;
 
 	// Genera los vertices de las muestras
 	GLdouble theta1 = angleMax / nSamples;
@@ -51,14 +52,16 @@ IndexMesh::generateByRevolution(
 
 	for (int i = 0; i < nSamples; ++i) // caras i a i + 1
 		for (int j = 0; j < tamPerfil - 1; ++j) { // una cara
-			if (profile[j].x != 0.0) // triángulo inferior
+			if (profile[j].x != 0.0) // triï¿½ngulo inferior
 				for (auto [s, t] : { pair{i, j}, {i, j + 1}, {i + 1, j} })
 					mesh->vIndexes.push_back(s * tamPerfil + t);
-			if (profile[j + 1].x != 0.0) // triángulo superior
+			if (profile[j + 1].x != 0.0) // triï¿½ngulo superior
 				for (auto [s, t] : { pair{i, j + 1}, {i + 1, j + 1}, {i + 1, j} })
 					mesh->vIndexes.push_back(s * tamPerfil + t);
 		}
 	mesh->mNumVertices = mesh->vVertices.size();
+
+	mesh->buildNormalVectors();
 
 	return mesh;
 }
@@ -68,8 +71,10 @@ IndexMesh::generateIndexedBox(GLdouble L) {
 
 	IndexMesh* mesh = new IndexMesh;
 	mesh->mPrimitive = GL_TRIANGLES;
+	mesh->mNumVertices = 8;
 	mesh->vVertices.reserve(8);
 	mesh->vIndexes.reserve(36);
+	mesh->vNormals.reserve(8);
 
 	// Push back the vertices of the cube
 	mesh->vVertices.push_back({ L / 2, L / 2, -L / 2 }); // 0 ++-
@@ -80,16 +85,6 @@ IndexMesh::generateIndexedBox(GLdouble L) {
 	mesh->vVertices.push_back({ -L / 2, -L / 2, L / 2 }); // 5 --+
 	mesh->vVertices.push_back({ -L / 2, L / 2, -L / 2 }); // 6 -+-
 	mesh->vVertices.push_back({ -L / 2, -L / 2, -L / 2 }); // 7 ---
-
-	// Set the normals
-	mesh->vNormals.push_back({1, 1, -2});
-	mesh->vNormals.push_back({2, -1, -1});
-	mesh->vNormals.push_back({2, 2, 1});
-	mesh->vNormals.push_back({1, -2, 2});
-	mesh->vNormals.push_back({-1, 1, 2});
-	mesh->vNormals.push_back({-2, -1, 1});
-	mesh->vNormals.push_back({-2, 2, -1});
-	mesh->vNormals.push_back({-1, -2, -2});
 
 	// Set the indexes of the triangles
 
@@ -153,11 +148,29 @@ IndexMesh::generateIndexedBox(GLdouble L) {
 	mesh->vIndexes.push_back(7);
 	mesh->vIndexes.push_back(5);
 
+	// Set the normals
+	mesh->buildNormalVectors();
+
 	return mesh;
 }
 
 void
-IndexMesh::buildNormalVectors()
-{
+IndexMesh::buildNormalVectors() {
 
+	for (int i = 0; i < vVertices.size(); ++i) {
+		vNormals.push_back({ 0, 0, 0 });
+	}
+
+	for (int i = 0; i < vIndexes.size(); i = i + 3) { // Suponemos triangulos
+		glm::vec3 normal = glm::normalize(glm::cross(vVertices[vIndexes[i + 1]] - vVertices[vIndexes[i]], 
+													 vVertices[vIndexes[i + 2]] - vVertices[vIndexes[i]]));
+
+		vNormals[vIndexes[i]] += normal;
+		vNormals[vIndexes[i+1]] += normal;
+		vNormals[vIndexes[i+2]] += normal;
+	}
+
+	for (int i = 0; i < vNormals.size(); ++i) {
+		vNormals[i] = glm::normalize(vNormals[i]);
+	}
 }
