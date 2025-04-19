@@ -16,11 +16,5 @@ Scene7::init()
 
 	// Graphics objects (entities) of the scene
 
-	Texture* a_text = new Texture();
-	a_text->load("../assets/images/noche.jpg", 100);
-
-	AdvancedTIEWing* Wing = new AdvancedTIEWing(50, 50, 50, 0, 0, 0);
-	Wing->setTexture(a_text);
-
-	gObjects.push_back(Wing);
+	gObjects.push_back(new IndexedBox(50));
 }
