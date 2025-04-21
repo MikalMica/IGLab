@@ -90,63 +90,63 @@ IndexMesh::generateIndexedBox(GLdouble L) {
 
 	// Triangle 1
 	mesh->vIndexes.push_back(0);
-	mesh->vIndexes.push_back(1);
 	mesh->vIndexes.push_back(2);
+	mesh->vIndexes.push_back(1);
 
 	// Triangle 2
 	mesh->vIndexes.push_back(2);
-	mesh->vIndexes.push_back(1);
 	mesh->vIndexes.push_back(3);
+	mesh->vIndexes.push_back(1);
 
 	// Triangle 3
 	mesh->vIndexes.push_back(2);
-	mesh->vIndexes.push_back(3);
 	mesh->vIndexes.push_back(4);
+	mesh->vIndexes.push_back(3);
 
 	// Triangle 4
 	mesh->vIndexes.push_back(4);
-	mesh->vIndexes.push_back(3);
 	mesh->vIndexes.push_back(5);
+	mesh->vIndexes.push_back(3);
 
 	// Triangle 5
 	mesh->vIndexes.push_back(4);
-	mesh->vIndexes.push_back(5);
 	mesh->vIndexes.push_back(6);
+	mesh->vIndexes.push_back(5);
 
 	// Triangle 6
 	mesh->vIndexes.push_back(6);
-	mesh->vIndexes.push_back(5);
 	mesh->vIndexes.push_back(7);
+	mesh->vIndexes.push_back(5);
 
 	// Triangle 7
 	mesh->vIndexes.push_back(6);
-	mesh->vIndexes.push_back(7);
 	mesh->vIndexes.push_back(0);
+	mesh->vIndexes.push_back(7);
 
 	// Triangle 8
 	mesh->vIndexes.push_back(0);
-	mesh->vIndexes.push_back(7);
 	mesh->vIndexes.push_back(1);
+	mesh->vIndexes.push_back(7);
 
 	// Triangle 9
 	mesh->vIndexes.push_back(4);
-	mesh->vIndexes.push_back(6);
 	mesh->vIndexes.push_back(2);
+	mesh->vIndexes.push_back(6);
 
 	// Triangle 10
 	mesh->vIndexes.push_back(2);
-	mesh->vIndexes.push_back(6);
 	mesh->vIndexes.push_back(0);
+	mesh->vIndexes.push_back(6);
 
 	// Triangle 11
 	mesh->vIndexes.push_back(1);
-	mesh->vIndexes.push_back(7);
 	mesh->vIndexes.push_back(3);
+	mesh->vIndexes.push_back(7);
 
 	// Triangle 12
 	mesh->vIndexes.push_back(3);
-	mesh->vIndexes.push_back(7);
 	mesh->vIndexes.push_back(5);
+	mesh->vIndexes.push_back(7);
 
 	// Set the normals
 	mesh->buildNormalVectors();
