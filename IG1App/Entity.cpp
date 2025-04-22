@@ -429,14 +429,19 @@ ColorMaterialEntity::mShowNormals = true;
 void
 ColorMaterialEntity::render(const glm::mat4& modelViewMat) const {
 
-	SingleColorEntity::render(modelViewMat);
-
-	if (mMesh != nullptr && mShowNormals) {
-
-		mat4 bmat = modelViewMat * mModelMat;
-		mShaderAux->use();
-		mShaderAux->setUniform("modelView", modelViewMat);
+	if (mMesh != nullptr) {
+		mat4 aMat = modelViewMat * mModelMat; // glm matrix multiplication
+		mShader->use();
+		mShader->setUniform("color", mColor);
+		upload(aMat);
 		mMesh->render();
+		
+		if (mShowNormals) {
+
+			mShaderAux->use();
+			mShaderAux->setUniform("modelView", aMat);
+			mMesh->render();
+		}
 	}
 
 
@@ -490,7 +495,7 @@ Disk::Disk(GLdouble R, GLdouble r, GLuint nRings, GLuint nSamples) {
 Cone::Cone(GLdouble h, GLdouble r, GLdouble R, GLuint nRings, GLuint nSamples) {
 	std::vector<glm::vec2> vector;
 
-	GLdouble xOffset = R - r / nRings;
+	GLdouble xOffset = (R - r) / nRings;
 	GLdouble yOffset = h / nRings;
 
 	GLdouble x = R;
@@ -559,4 +564,57 @@ AdvancedTIEWing::AdvancedTIEWing(GLdouble width, GLdouble height, GLdouble profu
 	mMesh = Mesh::generateTIEWing(width, height, profundity, x, y, z);
 	load();
 
+}
+
+AdvancedTIE::AdvancedTIE() {
+	// Alas
+	Texture* a_text = new Texture();
+	a_text->load("../assets/images/noche.jpg", 100);
+
+	AdvancedTIEWing* wing = new AdvancedTIEWing(50, 50, 100, 100, 0, 0);
+	wing->setTexture(a_text);
+
+	AddEntity(wing);
+
+	a_text = new Texture();
+	a_text->load("../assets/images/noche.jpg", 100);
+
+	wing = new AdvancedTIEWing(-50, 50, 100, -100, 0, 0);
+	wing->setTexture(a_text);
+
+	AddEntity(wing);
+
+	// Cilindro de ala a ala
+
+	Cone* eje = new Cone(200, 15, 15, 30, 30);
+	eje->setColor(glm::vec4(0.0f, 65.0f/255.0f, 106.0f/255.0f, 1.0f));
+	eje->setModelMat(glm::rotate(eje->modelMat(), glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f)));
+
+	AddEntity(eje);
+
+	// Esfera cuadrica xd
+
+	Sphere* cabina = new Sphere(40, 30, 30);
+	cabina->setColor(glm::vec4(0.0f, 65.0f / 255.0f, 106.0f / 255.0f, 1.0f));
+	AddEntity(cabina);
+
+	// Morro
+	CompoundEntity* morro = new CompoundEntity();
+
+	// Cilindro 
+	Cone* cilindro = new Cone(80, 15, 15, 30, 30);
+	cilindro->setColor(glm::vec4(0.0f, 65.0f / 255.0f, 106.0f / 255.0f, 1.0f));
+	morro->AddEntity(cilindro);
+
+	// Ventana
+	Disk* ventana = new Disk(15, 5, 5, 30);
+	ventana->setColor(glm::vec4(0.0f, 65.0f / 255.0f, 106.0f / 255.0f, 1.0f));
+	ventana->setModelMat(glm::translate(ventana->modelMat(), glm::vec3(0.0f, 40.0f, 0.0f)));
+	morro->AddEntity(ventana);
+
+	// movemos el morro
+	morro->setModelMat(glm::rotate(morro->modelMat(), glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f)));
+	morro->setModelMat(glm::translate(morro->modelMat(), glm::vec3(0.0f, 20.0f, 0.0f)));
+
+	AddEntity(morro);
 }

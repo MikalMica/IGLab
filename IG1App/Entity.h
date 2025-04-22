@@ -76,11 +76,11 @@ public:
 	inline void setTexture(Texture* newText) { mTexture = newText; }
 };
 
-class CompoundEntity : Abs_Entity {
+class CompoundEntity : public Abs_Entity {
 protected:
 	std::vector<Abs_Entity*> gObjects;
 public:
-	void AddEntity(Abs_Entity* ac);
+	void AddEntity(Abs_Entity* ac) { gObjects.push_back(ac); }
 	explicit CompoundEntity();
 	~CompoundEntity();
 
@@ -209,7 +209,7 @@ public:
 
 class AdvancedTIE : public CompoundEntity {
 public:
-	explicit AdvancedTIE() {}
+	explicit AdvancedTIE();
 };
 
 class AdvancedTIEWing : public EntityWithTexture {

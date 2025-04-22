@@ -76,3 +76,14 @@ Scene::update()
 	for (Abs_Entity* el : gObjects)
 		el->update();
 }
+
+void
+Scene::orbit()
+{
+	gObjects[0]->setModelMat(glm::rotate(gObjects[0]->modelMat(), glm::radians(-5.0f), glm::vec3(1, 0, 0)));
+}
+
+void
+Scene::rotate() {
+	gObjects[0]->setModelMat(glm::rotate(gObjects[0]->modelMat(), glm::radians(-5.0f), glm::vec3(0, 1, 0)));
+}

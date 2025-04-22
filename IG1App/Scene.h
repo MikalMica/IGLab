@@ -27,6 +27,11 @@ public:
 	void load();
 	void unload();
 
+	void rotate();
+	void orbit();
+
+	virtual bool handleKey(glm::uint key) { return false; }
+
 protected:
 	void destroy();
 	void setGL();

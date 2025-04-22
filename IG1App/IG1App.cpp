@@ -74,6 +74,8 @@ IG1App::init()
 	mScenes.push_back(new Scene5);
 	mScenes.push_back(new Scene6);
 	mScenes.push_back(new Scene7);
+	mScenes.push_back(new Scene8);
+	mScenes.push_back(new Scene9);
 
 	mCamera->set2D();
 
@@ -239,6 +241,12 @@ IG1App::key(unsigned int key)
 		case 'k':
 			display2cams = !display2cams;
 			mNeedsRedisplay = true;
+			break;
+		case 'f':
+			need_redisplay = mScenes[mCurrentScene]->handleKey(key);
+			break;
+		case 'g':
+			need_redisplay = mScenes[mCurrentScene]->handleKey(key);
 			break;
 		case 'n':
 			ColorMaterialEntity::toggleShowNormals();
