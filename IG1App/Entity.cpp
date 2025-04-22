@@ -393,21 +393,21 @@ Photo::update() {
 }
 
 Torus::Torus(GLdouble R, GLdouble r, GLuint nPoints, GLuint nSamples) {
-	mShader = Shader::get("simple");
+	mShader = Shader::get("simple_light");
 	// We get the profile points in a vector
 	std::vector<glm::vec2> vector;
 
 	GLdouble a_alpha = glm::radians(90.0f);
 
-	GLdouble x = r * cos(a_alpha) + R;
+	GLdouble x = r * cos(a_alpha) - R;
 	GLdouble y = r * sin(a_alpha);
 	vector.push_back(glm::vec2(x, y));
 
 	GLdouble a_spinOffset = glm::radians(360.0f / nPoints);
 
-	for (GLuint i = 1; i < nPoints; ++i) {
+	for (GLuint i = 0; i < nPoints; ++i) {
 		a_alpha += a_spinOffset;
-		GLdouble x = r * cos(a_alpha) + R;
+		GLdouble x = r * cos(a_alpha) - R;
 		GLdouble y = r * sin(a_alpha);
 		vector.push_back(glm::vec2(x, y));
 	}
@@ -435,8 +435,7 @@ ColorMaterialEntity::render(const glm::mat4& modelViewMat) const {
 
 		mat4 bmat = modelViewMat * mModelMat;
 		mShaderAux->use();
-		mShaderAux->setUniform("normals", modelViewMat);
-		upload(bmat);
+		mShaderAux->setUniform("modelView", modelViewMat);
 		mMesh->render();
 	}
 
