@@ -1,6 +1,5 @@
 #include "Entity.h"
 #include "IndexMesh.h"
-#include <iostream>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -450,7 +449,6 @@ ColorMaterialEntity::render(const glm::mat4& modelViewMat) const {
 void
 ColorMaterialEntity::toggleShowNormals() {
 	mShowNormals = !mShowNormals;
-	std::cout << mShowNormals << std::endl;
 }
 
 IndexedBox::IndexedBox(GLdouble L ) : ColorMaterialEntity({0, 1, 0, 1}) {
