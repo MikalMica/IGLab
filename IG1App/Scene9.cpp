@@ -16,18 +16,20 @@ Scene9::init()
 
 	// Graphics objects (entities) of the scene
 
+	Sphere* tatooine = new Sphere(glm::vec4(1.0f, 233.0f / 255.0f, 0.0f, 1.0f), 250, 100, 100);
+
+	gObjects.push_back(tatooine);
+
 	CompoundEntity* Node = new CompoundEntity();
 
 	AdvancedTIE* tie = new AdvancedTIE();
 	tie->setModelMat(translate(tie->modelMat(), glm::vec3(0.0f, 300.0f, 0.0f)));
 
 	Node->AddEntity(tie);
+
+	mNode = Node;
 	gObjects.push_back(Node);
-
-	Sphere* tatooine = new Sphere(250, 100, 100);
-	tatooine->setColor(glm::vec4(1.0f, 233.0f / 255.0f, 0.0f, 1.0f));
-
-	gObjects.push_back(tatooine);
+	Node = nullptr;
 }
 
 bool

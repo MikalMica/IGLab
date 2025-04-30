@@ -16,6 +16,6 @@ Scene6::init()
 
 	// Graphics objects (entities) of the scene
 
-	gObjects.push_back(new Torus(100, 30));
+	gObjects.push_back(new Torus({ 1, 1, 1, 1 }, 100, 30));
 
 }

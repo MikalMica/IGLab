@@ -76,6 +76,7 @@ IG1App::init()
 	mScenes.push_back(new Scene7);
 	mScenes.push_back(new Scene8);
 	mScenes.push_back(new Scene9);
+	mScenes.push_back(new Scene10);
 
 	mCamera->set2D();
 
@@ -250,6 +251,9 @@ IG1App::key(unsigned int key)
 			break;
 		case 'n':
 			ColorMaterialEntity::toggleShowNormals();
+			break;
+		case 'r':
+			mScenes[mCurrentScene]->switchLights();
 			break;
 		default:
 			if (key >= '0' && key <= '9' && !changeScene(key - '0')) {

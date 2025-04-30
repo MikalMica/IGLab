@@ -7,6 +7,7 @@
 #include "Mesh.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "Material.h"
 
 class Abs_Entity // abstract class
 {
@@ -56,7 +57,17 @@ public:
 	void render(const glm::mat4& modelViewMat) const override;
 };
 
-class ColorMaterialEntity : public SingleColorEntity {
+class EntityWithMaterial : public Abs_Entity {
+protected:
+	Material mMaterial;
+public:
+	EntityWithMaterial() : mMaterial() { mShader = Shader::get("light"); }
+	EntityWithMaterial(Material material) : mMaterial(material) { mShader = Shader::get("light"); }
+	void setMaterial(Material m) { mMaterial = m; }
+	void render(const glm::mat4& modelViewMat) const override;
+};
+
+class ColorMaterialEntity : public EntityWithMaterial {
 	Shader* mShaderAux;
 	static bool mShowNormals;
 public:
@@ -64,6 +75,7 @@ public:
 	void render(const glm::mat4& modelViewMat) const override;
 	static void toggleShowNormals();
 };
+
 
 class EntityWithTexture : public Abs_Entity {
 protected:
@@ -184,7 +196,7 @@ public:
 
 class Torus : public ColorMaterialEntity {
 public:
-	explicit Torus(GLdouble R, GLdouble r, GLuint nPoints = 40, GLuint nSamples = 40);
+	explicit Torus(glm::vec4 color, GLdouble R, GLdouble r, GLuint nPoints = 40, GLuint nSamples = 40);
 };
 
 class IndexedBox : public ColorMaterialEntity {
@@ -194,17 +206,17 @@ public:
 
 class Sphere : public ColorMaterialEntity {
 public:
-	explicit Sphere(GLdouble radius, GLuint nParalels, GLuint nMeridian);
+	explicit Sphere(glm::vec4 color, GLdouble radius, GLuint nParalels, GLuint nMeridian);
 };
 
 class Disk : public ColorMaterialEntity {
 public:
-	explicit Disk(GLdouble R, GLdouble r, GLuint nRings, GLuint nSample);
+	explicit Disk(glm::vec4 color, GLdouble R, GLdouble r, GLuint nRings, GLuint nSample);
 };
 
 class Cone : public ColorMaterialEntity {
 public:
-	explicit Cone(GLdouble h, GLdouble r, GLdouble R, GLuint nRings, GLuint nSamples);
+	explicit Cone(glm::vec4 color, GLdouble h, GLdouble r, GLdouble R, GLuint nRings, GLuint nSamples);
 };
 
 class AdvancedTIE : public CompoundEntity {
@@ -215,5 +227,6 @@ public:
 class AdvancedTIEWing : public EntityWithTexture {
 public:
 	explicit AdvancedTIEWing(GLdouble width, GLdouble height, GLdouble profundity, GLdouble x, GLdouble y, GLdouble z);
+	void render(const glm::mat4& modelViewMat) const override;
 };
 #endif //_H_Entities_H_

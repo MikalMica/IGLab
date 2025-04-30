@@ -15,6 +15,14 @@ Scene::init()
 	// Textures
 
 	// Graphics objects (entities) of the scene
+
+	DirLight* dirLight = new DirLight();
+	dirLight->setAmb({ .25, .25, .25 });
+	dirLight->setDiff({ .6, .6, .6 });
+	dirLight->setSpec({ 0, 0.2, 0 });
+	dirLight->setDirection({ -1, -1, -1 });
+
+	gLights.push_back(dirLight);
 }
 
 Scene::~Scene()
@@ -36,6 +44,7 @@ Scene::destroy()
 void
 Scene::load()
 {
+
 	for (Abs_Entity* obj : gObjects)
 		obj->load();
 }
@@ -45,14 +54,19 @@ Scene::unload()
 {
 	for (Abs_Entity* obj : gObjects)
 		obj->unload();
+
+	for (auto light : gLights) {
+		Shader* s = Shader::get("light");
+		light->unload(*s);
+	}
 }
 
 void
 Scene::setGL()
 {
 	// OpenGL basic setting
-	glClearColor(0.6, 0.7, 0.8, 1.0); // background color (alpha=1 -> opaque)
-	glEnable(GL_DEPTH_TEST);          // enable Depth test
+	glClearColor(0, 0, 0, 1.0); // background color (alpha=1 -> opaque)
+	glEnable(GL_DEPTH_TEST);    // enable Depth test
 }
 void
 Scene::resetGL()
@@ -62,9 +76,18 @@ Scene::resetGL()
 }
 
 void
+Scene::uploadLights(Camera const& cam) const {
+	for (auto light : gLights) {
+		Shader* s = Shader::get("light");
+		light->upload(*s, cam.viewMat());
+	}
+}
+
+void
 Scene::render(Camera const& cam) const
 {
 	cam.upload();
+	uploadLights(cam);
 
 	for (Abs_Entity* el : gObjects)
 		el->render(cam.viewMat());
@@ -80,10 +103,19 @@ Scene::update()
 void
 Scene::orbit()
 {
-	gObjects[0]->setModelMat(glm::rotate(gObjects[0]->modelMat(), glm::radians(-5.0f), glm::vec3(1, 0, 0)));
+	mNode->setModelMat(glm::rotate(mNode->modelMat(), glm::radians(-5.0f), glm::vec3(1, 0, 0)));
 }
 
 void
 Scene::rotate() {
-	gObjects[0]->setModelMat(glm::rotate(gObjects[0]->modelMat(), glm::radians(-5.0f), glm::vec3(0, 1, 0)));
+	mNode->setModelMat(glm::rotate(mNode->modelMat(), glm::radians(-5.0f), glm::vec3(0, 1, 0)));
+}
+
+void 
+Scene::switchLights() {
+	lightsOn = !lightsOn;
+
+	for (auto light : gLights) {
+		light->setEnabled(light);
+	}
 }

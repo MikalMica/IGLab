@@ -391,8 +391,17 @@ Photo::update() {
 	mTexture->loadColorBuffer(800, 600);
 }
 
-Torus::Torus(GLdouble R, GLdouble r, GLuint nPoints, GLuint nSamples) {
-	mShader = Shader::get("simple_light");
+void
+EntityWithMaterial::render(const glm::mat4& modelViewMat) const {
+	mShader->use();
+	// Carga los atributos del material en la GPU
+	mMaterial.upload(*mShader);
+	upload(modelViewMat * mModelMat);
+	mMesh->render();
+}
+
+Torus::Torus(glm::vec4 color, GLdouble R, GLdouble r, GLuint nPoints, GLuint nSamples) : ColorMaterialEntity(color){
+	//mShader = Shader::get("simple_light");
 	// We get the profile points in a vector
 	std::vector<glm::vec2> vector;
 
@@ -417,26 +426,24 @@ Torus::Torus(GLdouble R, GLdouble r, GLuint nPoints, GLuint nSamples) {
 	load();
 }
 
-ColorMaterialEntity::ColorMaterialEntity(glm::vec4 color) : SingleColorEntity(color) {
-	mShader = Shader::get("simple_light");
+ColorMaterialEntity::ColorMaterialEntity(glm::vec4 color) : EntityWithMaterial()
+{
 	mShaderAux = Shader::get("normals");
+	mMaterial = Material(color);
 }
 
-bool 
+bool
 ColorMaterialEntity::mShowNormals = true;
 
 void
 ColorMaterialEntity::render(const glm::mat4& modelViewMat) const {
 
 	if (mMesh != nullptr) {
-		mat4 aMat = modelViewMat * mModelMat; // glm matrix multiplication
-		mShader->use();
-		mShader->setUniform("color", mColor);
-		upload(aMat);
-		mMesh->render();
+		EntityWithMaterial::render(modelViewMat);
 		
 		if (mShowNormals) {
 
+			mat4 aMat = modelViewMat * mModelMat; // glm matrix multiplication
 			mShaderAux->use();
 			mShaderAux->setUniform("modelView", aMat);
 			mMesh->render();
@@ -456,7 +463,7 @@ IndexedBox::IndexedBox(GLdouble L ) : ColorMaterialEntity({0, 1, 0, 1}) {
 	load();
 }
 
-Sphere::Sphere(GLdouble radius, GLuint nParalels, GLuint nMeridians) {
+Sphere::Sphere(glm::vec4 color, GLdouble radius, GLuint nParalels, GLuint nMeridians) : ColorMaterialEntity(color) {
 	std::vector<glm::vec2> vector;
 
 	GLdouble segmentDistance = glm::radians(180.0 / nMeridians);
@@ -474,7 +481,7 @@ Sphere::Sphere(GLdouble radius, GLuint nParalels, GLuint nMeridians) {
 	load();
 }
 
-Disk::Disk(GLdouble R, GLdouble r, GLuint nRings, GLuint nSamples) {
+Disk::Disk(glm::vec4 color, GLdouble R, GLdouble r, GLuint nRings, GLuint nSamples) : ColorMaterialEntity(color){
 	std::vector<glm::vec2> vector;
 
 	GLdouble width = R - r;
@@ -490,7 +497,7 @@ Disk::Disk(GLdouble R, GLdouble r, GLuint nRings, GLuint nSamples) {
 	load();
 }
 
-Cone::Cone(GLdouble h, GLdouble r, GLdouble R, GLuint nRings, GLuint nSamples) {
+Cone::Cone(glm::vec4 color, GLdouble h, GLdouble r, GLdouble R, GLuint nRings, GLuint nSamples) : ColorMaterialEntity(color) {
 	std::vector<glm::vec2> vector;
 
 	GLdouble xOffset = (R - r) / nRings;
@@ -564,49 +571,57 @@ AdvancedTIEWing::AdvancedTIEWing(GLdouble width, GLdouble height, GLdouble profu
 
 }
 
+void
+AdvancedTIEWing::render(const glm::mat4& modelViewMat) const {
+	if (mMesh != nullptr) {
+		mat4 aMat = modelViewMat * mModelMat; // glm matrix multiplication
+		mShader->use();
+
+		mShader->setUniform("modulate", mModulate); // sets the modulate
+		upload(aMat);
+
+		if (mTexture != nullptr) mTexture->bind(); // binds the texture if it isn't nullptr
+
+		glDepthMask(GL_FALSE);
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		mMesh->render();
+
+		glDepthMask(GL_TRUE);
+		glDisable(GL_BLEND);
+
+		if (mTexture != nullptr) mTexture->unbind(); // unbinds the texture
+	}
+}
+
 AdvancedTIE::AdvancedTIE() {
-	// Alas
-	Texture* a_text = new Texture();
-	a_text->load("../assets/images/noche.jpg", 100);
-
-	AdvancedTIEWing* wing = new AdvancedTIEWing(50, 50, 100, 100, 0, 0);
-	wing->setTexture(a_text);
-
-	AddEntity(wing);
-
-	a_text = new Texture();
-	a_text->load("../assets/images/noche.jpg", 100);
-
-	wing = new AdvancedTIEWing(-50, 50, 100, -100, 0, 0);
-	wing->setTexture(a_text);
-
-	AddEntity(wing);
-
 	// Cilindro de ala a ala
 
-	Cone* eje = new Cone(200, 15, 15, 30, 30);
-	eje->setColor(glm::vec4(0.0f, 65.0f/255.0f, 106.0f/255.0f, 1.0f));
+	Cone* eje = new Cone(glm::vec4(0.0f, 65.0f / 255.0f, 106.0f / 255.0f, 1.0f), 200, 15, 15, 30, 30);
+	//eje->setColor(glm::vec4(0.0f, 65.0f/255.0f, 106.0f/255.0f, 1.0f));
 	eje->setModelMat(glm::rotate(eje->modelMat(), glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f)));
 
 	AddEntity(eje);
 
 	// Esfera cuadrica xd
 
-	Sphere* cabina = new Sphere(40, 30, 30);
-	cabina->setColor(glm::vec4(0.0f, 65.0f / 255.0f, 106.0f / 255.0f, 1.0f));
+	Sphere* cabina = new Sphere(glm::vec4(0.0f, 65.0f / 255.0f, 106.0f / 255.0f, 1.0f), 40, 30, 30);
+	//cabina->setColor(glm::vec4(0.0f, 65.0f / 255.0f, 106.0f / 255.0f, 1.0f));
 	AddEntity(cabina);
 
 	// Morro
 	CompoundEntity* morro = new CompoundEntity();
 
 	// Cilindro 
-	Cone* cilindro = new Cone(80, 15, 15, 30, 30);
-	cilindro->setColor(glm::vec4(0.0f, 65.0f / 255.0f, 106.0f / 255.0f, 1.0f));
+	Cone* cilindro = new Cone(glm::vec4(0.0f, 65.0f / 255.0f, 106.0f / 255.0f, 1.0f), 80, 15, 15, 30, 30);
+	//cilindro->setColor(glm::vec4(0.0f, 65.0f / 255.0f, 106.0f / 255.0f, 1.0f));
 	morro->AddEntity(cilindro);
 
 	// Ventana
-	Disk* ventana = new Disk(15, 5, 5, 30);
-	ventana->setColor(glm::vec4(0.0f, 65.0f / 255.0f, 106.0f / 255.0f, 1.0f));
+	Disk* ventana = new Disk(glm::vec4(0.0f, 65.0f / 255.0f, 106.0f / 255.0f, 1.0f), 15, 5, 5, 30);
+	//ventana->setColor(glm::vec4(0.0f, 65.0f / 255.0f, 106.0f / 255.0f, 1.0f));
 	ventana->setModelMat(glm::translate(ventana->modelMat(), glm::vec3(0.0f, 40.0f, 0.0f)));
 	morro->AddEntity(ventana);
 
@@ -615,4 +630,21 @@ AdvancedTIE::AdvancedTIE() {
 	morro->setModelMat(glm::translate(morro->modelMat(), glm::vec3(0.0f, 20.0f, 0.0f)));
 
 	AddEntity(morro);
+
+	// Alas
+	Texture* a_text = new Texture();
+	a_text->load("../assets/images/noche.jpg", 150);
+
+	AdvancedTIEWing* wing = new AdvancedTIEWing(50, 50, 100, 100, 0, 0);
+	wing->setTexture(a_text);
+
+	AddEntity(wing);
+
+	a_text = new Texture();
+	a_text->load("../assets/images/noche.jpg", 150);
+
+	wing = new AdvancedTIEWing(-50, 50, 100, -100, 0, 0);
+	wing->setTexture(a_text);
+
+	AddEntity(wing);
 }
