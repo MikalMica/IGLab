@@ -16,11 +16,11 @@ Scene::init()
 
 	// Graphics objects (entities) of the scene
 
-	DirLight* dirLight = new DirLight();
+	DirLight* dirLight = new DirLight(0);
 	dirLight->setAmb({ .25, .25, .25 });
 	dirLight->setDiff({ .6, .6, .6 });
 	dirLight->setSpec({ 0, 0.2, 0 });
-	dirLight->setDirection({ -1, -1, -1 });
+	dirLight->setEnabled(true);
 
 	gLights.push_back(dirLight);
 }
@@ -39,6 +39,11 @@ Scene::destroy()
 		delete el;
 
 	gObjects.clear();
+
+	for (Light* lg : gLights)
+		delete lg;
+
+	gLights.clear();
 }
 
 void
@@ -55,8 +60,10 @@ Scene::unload()
 	for (Abs_Entity* obj : gObjects)
 		obj->unload();
 
+	Shader* s = Shader::get("light");
+	s->use();
+
 	for (auto light : gLights) {
-		Shader* s = Shader::get("light");
 		light->unload(*s);
 	}
 }
@@ -65,7 +72,7 @@ void
 Scene::setGL()
 {
 	// OpenGL basic setting
-	glClearColor(0, 0, 0, 1.0); // background color (alpha=1 -> opaque)
+	glClearColor(1, 1, 1, 1.0); // background color (alpha=1 -> opaque)
 	glEnable(GL_DEPTH_TEST);    // enable Depth test
 }
 void
@@ -77,8 +84,10 @@ Scene::resetGL()
 
 void
 Scene::uploadLights(Camera const& cam) const {
+	Shader* s = Shader::get("light");
+	s->use();
+
 	for (auto light : gLights) {
-		Shader* s = Shader::get("light");
 		light->upload(*s, cam.viewMat());
 	}
 }

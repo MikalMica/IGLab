@@ -30,9 +30,9 @@ protected:
 	bool bEnabled;
 
 	// Atributos lumínicos y geométrico de la fuente de luz
-	glm::vec3 ambient = {0.1, 0.1, 0.1};
-	glm::vec3 diffuse = {0.5, 0.5, 0.5};
-	glm::vec3 specular = {0.5, 0.5, 0.5};
+	glm::vec3 ambient = { 0.1, 0.1, 0.1 };
+	glm::vec3 diffuse = { 0.5, 0.5, 0.5 };
+	glm::vec3 specular = { 0.5, 0.5, 0.5 };
 };
 
 class DirLight : public Light {
@@ -43,7 +43,7 @@ public:
 	void setDirection(const glm::vec3& dir);
 
 protected:
-	glm::vec4 direction = {-1, -1, -1, 0};
+	glm::vec4 direction = { -1, -1, -1, 0 };
 };
 
 inline void
@@ -58,10 +58,11 @@ public:
 	virtual void upload(Shader& shader, glm::mat4 const& modelViewMat) const override;
 
 	void setPosition(const glm::fvec3& dir);
+	inline glm::vec3 getPosition() { return position; }
 	void setAttenuation(GLfloat kc, GLfloat kl, GLfloat kq);
 
 protected:
-	glm::vec4 position = {0, 0, 0, 1};
+	glm::vec4 position = { 0, 0, 0, 1 };
 	// Factores de atenuación
 	GLfloat constant = 1, linear = 0, quadratic = 0;
 };
@@ -80,7 +81,7 @@ PosLight::setAttenuation(GLfloat nkc, GLfloat nkl, GLfloat nkq) {
 
 class SpotLight : public PosLight {
 public:
-	SpotLight(const glm::vec3& pos = {0, 0, 0}, int id = 0);
+	SpotLight(const glm::vec3& pos = { 0, 0, 0 }, int id = 0);
 
 	virtual void upload(Shader& shader, glm::mat4 const& modelViewMat) const override;
 	void setDirection(const glm::vec3& dir) { direction = dir; }
@@ -88,7 +89,7 @@ public:
 
 protected:
 	// Atributos del foco
-	glm::vec3 direction = {0, 0, -1};
+	glm::vec3 direction = { 0, 0, -1 };
 	GLfloat cutoff = 60, outerCutoff = 120;
 };
 

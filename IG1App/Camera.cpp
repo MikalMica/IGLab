@@ -38,7 +38,6 @@ void
 Camera::setVM()
 {
 	mViewMat = lookAt(mEye, mLook, mUp); // glm::lookAt defines the view matrix
-	Shader::setUniform4All("LightDir", mViewMat * dmat4({ -1, -1, -1, 0 }));
 	setAxes();
 }
 

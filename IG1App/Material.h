@@ -8,7 +8,7 @@ class Material
 {
 public:
 	Material() = default;
-	Material(glm::vec3 color, float shininess=8.0); // color material
+	Material(glm::vec3 color, float shininess = 8.0); // color material
 
 	virtual ~Material() = default;
 	void upload(Shader& shader) const;
@@ -22,9 +22,9 @@ public:
 
 protected:
 	// Coeficientes de reflexión
-	glm::vec3 ambient = {0.2, 0.2, 0.2};
-	glm::vec3 diffuse = {0.8, 0.8, 0.8};
-	glm::vec3 specular = {0.0, 0.0, 0.0};
+	glm::vec3 ambient = { 0.2, 0.2, 0.2 };
+	glm::vec3 diffuse = { 0.8, 0.8, 0.8 };
+	glm::vec3 specular = { 0.0, 0.0, 0.0 };
 	// Exponente para la reflexión especular
 	GLfloat expF = 0;
 };
@@ -54,4 +54,3 @@ Material::setExp(GLfloat exp)
 }
 
 #endif //_H_Material_H_
-

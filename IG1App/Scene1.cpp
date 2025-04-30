@@ -8,6 +8,7 @@ using namespace glm;
 void
 Scene1::init()
 {
+	Scene::init();
 	setGL(); // OpenGL settings
 
 	// allocate memory and load resources
