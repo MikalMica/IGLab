@@ -8,6 +8,7 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "Material.h"
+#include "Light.h"
 
 class Abs_Entity // abstract class
 {
@@ -30,6 +31,8 @@ public:
 	// load or unload entity data into the GPU
 	virtual void load();
 	virtual void unload();
+	virtual void uploadLights(const glm::mat4& modelViewMat) {}
+	virtual void switchLights() {}
 
 protected:
 	Mesh* mMesh = nullptr; // the mesh
@@ -91,8 +94,10 @@ public:
 class CompoundEntity : public Abs_Entity {
 protected:
 	std::vector<Abs_Entity*> gObjects;
+	std::vector<Light*> gLights;
 public:
 	void AddEntity(Abs_Entity* ac) { gObjects.push_back(ac); }
+	void AddLight(Light* lt) { gLights.push_back(lt); }
 	explicit CompoundEntity();
 	~CompoundEntity();
 
@@ -100,6 +105,8 @@ public:
 	void update() override;
 	void load() override;
 	void unload() override;
+	void uploadLights(const glm::mat4& modelViewMat) override;
+	void switchLights() override;
 };
 
 class RGBAxes : public EntityWithColors

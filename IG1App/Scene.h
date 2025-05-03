@@ -25,6 +25,7 @@ public:
 	void uploadLights(Camera const& cam) const;
 	void switchLights();
 	virtual void update();
+	void switchElementsLights();
 
 	// load or unload scene data into the GPU
 	void load();

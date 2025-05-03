@@ -249,12 +249,20 @@ IG1App::key(unsigned int key)
 		case 'g':
 			need_redisplay = mScenes[mCurrentScene]->handleKey(key);
 			break;
+		case 't':
+			need_redisplay = mScenes[mCurrentScene]->handleKey(key);
+			break;
+		case 'y':
+			need_redisplay = mScenes[mCurrentScene]->handleKey(key);
+			break;
 		case 'n':
 			ColorMaterialEntity::toggleShowNormals();
 			break;
 		case 'r':
 			mScenes[mCurrentScene]->switchLights();
 			break;
+		case 'h':
+			mScenes[mCurrentScene]->switchElementsLights();
 		default:
 			if (key >= '0' && key <= '9' && !changeScene(key - '0')) {
 				cout << "[NOTE] There is no scene " << char(key) << ".\n";

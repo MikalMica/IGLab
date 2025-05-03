@@ -72,7 +72,7 @@ void
 Scene::setGL()
 {
 	// OpenGL basic setting
-	glClearColor(1, 1, 1, 1.0); // background color (alpha=1 -> opaque)
+	glClearColor(0.6, 0.7, 0.8, 1.0); // background color (alpha=1 -> opaque)
 	glEnable(GL_DEPTH_TEST);    // enable Depth test
 }
 void
@@ -89,6 +89,10 @@ Scene::uploadLights(Camera const& cam) const {
 
 	for (auto light : gLights) {
 		light->upload(*s, cam.viewMat());
+	}
+
+	for (auto el : gObjects) {
+		el->uploadLights(cam.viewMat());
 	}
 }
 
@@ -125,6 +129,13 @@ Scene::switchLights() {
 	lightsOn = !lightsOn;
 
 	for (auto light : gLights) {
-		light->setEnabled(light);
+		light->setEnabled(lightsOn);
+	}
+}
+
+void
+Scene::switchElementsLights() {
+	for (auto el : gObjects) {
+		el->switchLights();
 	}
 }

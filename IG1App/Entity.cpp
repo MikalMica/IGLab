@@ -527,7 +527,11 @@ CompoundEntity::~CompoundEntity() {
 	for (Abs_Entity* el : gObjects)
 		delete el;
 
+	for (auto light : gLights)
+		delete light;
+
 	gObjects.clear();
+	gLights.clear();
 
 }
 
@@ -537,6 +541,29 @@ CompoundEntity::render(const glm::mat4& modelViewMat) const {
 
 	for (auto object : gObjects) {
 		object->render(aMat);
+	}
+}
+
+void
+CompoundEntity::uploadLights(const glm::mat4& modelViewMat) {
+	mat4 aMat = modelViewMat * mModelMat;
+	Shader* s = Shader::get("light");
+
+	s->use();
+
+	for (auto light : gLights) {
+		light->upload(*s, aMat);
+	}
+
+	for (auto el : gObjects) {
+		el->uploadLights(modelViewMat);
+	}
+}
+
+void
+CompoundEntity::switchLights() {
+	for (auto light : gLights) {
+		light->setEnabled(!light->enabled());
 	}
 }
 
