@@ -9,7 +9,7 @@ void
 Scene9::init()
 {
 	Scene::init();
-	PosLight* Poslight = new PosLight();
+	PosLight* Poslight = new PosLight(0);
 	Poslight->setAmb({ .25, .25, .25 });
 	Poslight->setDiff({ 1, 1, 0});
 	Poslight->setSpec({ 0, 0.2, 0 });
@@ -17,12 +17,11 @@ Scene9::init()
 	Poslight->setPosition({255, 255, 0});
 	_light1 = Poslight;
 
-	SpotLight* Spotlight = new SpotLight();
+	SpotLight* Spotlight = new SpotLight({ 0, 150, 270 }, 1);
 	Spotlight->setAmb({ .25, .25, .25 });
 	Spotlight->setDiff({ .6, .6, .6 });
 	Spotlight->setSpec({ 0, 0.2, 0 });
 	Spotlight->setEnabled(true);
-	Spotlight->setPosition({ 0, 150, 270 });
 	Spotlight->setDirection({ -1, -1, -1 });
 	_light2 = Spotlight;
 
@@ -49,14 +48,13 @@ Scene9::init()
 
 
 
-	SpotLight* Tielight = new SpotLight();
+	SpotLight* Tielight = new SpotLight({ 0., 300., 0. },2);
 	Tielight->setAmb({ .25, .25, .25 });
 	Tielight->setDiff({ .6, .6, .6 });
 	Tielight->setSpec({ 0, 0.2, 0 });
 	Tielight->setEnabled(true);
 	Tielight->setCutoff(30., 50.);
 	Tielight->setAttenuation(1., 0., 0.);
-	Tielight->setPosition({0., 300., 0.});
 	Tielight->setDirection({ 0, -1, 0 });
 
 	Node->AddLight(Tielight);
